@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:the_movie_app_padc/data/vos/collection_vo.dart';
-import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
-import 'package:the_movie_app_padc/data/vos/production_company_vo.dart';
-import 'package:the_movie_app_padc/data/vos/production_country_vo.dart';
-import 'package:the_movie_app_padc/data/vos/spoken_language_vo.dart';
-import 'package:the_movie_app_padc/pages/main_page.dart';
-import 'package:the_movie_app_padc/pages/splash_page.dart';
-import 'package:the_movie_app_padc/persistance/hive_constants.dart';
-import 'package:the_movie_app_padc/utils/colors.dart';
 
-import 'data/vos/genre_vo.dart';
+import 'package:the_movie_app_padc/network/data_agent/movie_booking_data_agent.dart';
+import 'package:the_movie_app_padc/network/data_agent/retrofit_data_agent_impl.dart';
+import 'package:the_movie_app_padc/pages/splash_page.dart';
+import 'package:the_movie_app_padc/utils/colors.dart';
 
 void main() async{
 
-  // TheMovieBookingDataAgent dataAgent = RetrofitDataAgentImpl();
-  // dataAgent.getNowPlayingMovie("1");
+  TheMovieBookingDataAgent dataAgent = RetrofitDataAgentImpl();
+  dataAgent.getNowPlayingMovie("1");
 
 
-  await Hive.initFlutter();
-  Hive.registerAdapter(CollectionVOAdapter());
-  Hive.registerAdapter(GenreVOAdapter());
-  Hive.registerAdapter(MovieVOAdapter());
-  Hive.registerAdapter(ProductionCompanyVOAdapter());
-  Hive.registerAdapter(ProductionCountryVOAdapter());
-  Hive.registerAdapter(SpokenLanguageVOAdapter());
-  try{
-    await Hive.openBox<MovieVO>("kBoxNameMovieVO");
-    print("OPENING BOX ======>");
-  }catch(e) {
-    debugPrint("HIVE ERROR ====> " +e.toString());
-  }
+  // await Hive.initFlutter();
+  // Hive.registerAdapter(CollectionVOAdapter());
+  // Hive.registerAdapter(GenreVOAdapter());
+  // Hive.registerAdapter(MovieVOAdapter());
+  // Hive.registerAdapter(ProductionCompanyVOAdapter());
+  // Hive.registerAdapter(ProductionCountryVOAdapter());
+  // Hive.registerAdapter(SpokenLanguageVOAdapter());
+  // try{
+  //   await Hive.openBox<MovieVO>("kBoxNameMovieVO");
+  //   print("OPENING BOX ======>");
+  // }catch(e) {
+  //   debugPrint("HIVE ERROR ====> " +e.toString());
+  // }
   runApp(const MovieBookingApp());
 }
 

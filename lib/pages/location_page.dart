@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:the_movie_app_padc/data/vos/city_dummy_vo.dart';
+import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/pages/main_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
@@ -15,14 +15,25 @@ class LocationPage extends StatefulWidget {
 
 class _LocationPageState extends State<LocationPage> {
 
+  /// Model
+  final MovieBookingModel _model = MovieBookingModel();
+  List<String> cities = [];
+
   @override
   void initState() {
+    getCities();
     super.initState();
-
   }
 
   void getCities(){
-
+    _model.getCitiesFromNetwork().then((value) {
+      for(var data in value){
+        cities.add(data.name ?? "");
+      }
+      setState(() {
+        cities;
+      });
+    });
   }
 
 
@@ -128,7 +139,10 @@ class _LocationPageState extends State<LocationPage> {
             verticalSpacing(10),
             Expanded(
               child: ListView.builder(itemBuilder: (context,index){
-                CityVO city = cityList[index];
+
+
+                String? city = cities.isEmpty ? "": cities[index];
+
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -136,7 +150,7 @@ class _LocationPageState extends State<LocationPage> {
                       alignment:Alignment.centerLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(14.0),
-                        child: Text(city.name,
+                        child: Text(city ,
                           style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: kTextRegular2x,
@@ -147,7 +161,7 @@ class _LocationPageState extends State<LocationPage> {
                     const Divider(color: kChipBackground,)
                   ],
                 );
-              }, itemCount: 5,),
+              }, itemCount: cities.length,),
             )
           ],
         ),

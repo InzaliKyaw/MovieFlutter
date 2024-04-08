@@ -13,6 +13,7 @@ const String kEndPointGetCreditByMovie = "/3/movie";
 const String kEndPointGetCinemaTimeSlot = "/api/v2/cinema-day-timeslots";
 const String kEndPointCheckOTP = "/api/v2/check-otp";
 const String kEndPointGetOTP = "/api/v2/get-otp";
+const String kEndPointGetCities = "/api/v2/cities";
 
 
 /// Parameters

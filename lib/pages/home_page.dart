@@ -119,35 +119,26 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
 
     /// Now Playing Movies From Database
     /// Floor
-    // _model.getNowPlayingMoviesFromDatabase().then((nowPlayingMoviesFromDatabase) {
-    //   setState(() {
-    //     nowPlayingMovies = nowPlayingMoviesFromDatabase;
-    //     moviesToShow = nowPlayingMoviesFromDatabase;
-    //   });
-    // });
-    List<MovieVO> nowPlayingMoviesFromDatabase = _model.getNowPlayingMoviesFromDatabase();
-    setState(() {
-      nowPlayingMovies = nowPlayingMoviesFromDatabase;
-      moviesToShow = nowPlayingMoviesFromDatabase;
+    _model.getNowPlayingMoviesFromDatabase().listen((nowPlayingMoviesFromDatabase) {
+      if(mounted){
+        setState(() {
+          nowPlayingMovies = nowPlayingMoviesFromDatabase;
+          if(moviesToShow.isEmpty){
+            moviesToShow = nowPlayingMoviesFromDatabase;
+          }
+        });
+      }
     });
 
     /// Coming Soon Movies From Database
-    /*
-    Floor
-    _model.getComingSoonMovies().then((comingSoonMoviesFromDatabase) {
+    /// Floor
+    _model.getComingSoonMoviesFromDatabase().listen((comingSoonMoviesFromDatabase) {
       comingSoonMovies = comingSoonMoviesFromDatabase;
     });
-     */
-    List<MovieVO> comingSoonMoviesFromDatabase = _model.getComingSoonMoviesFromDatabase();
-    comingSoonMovies = comingSoonMoviesFromDatabase;
+
 
     /// Now Playing Movies From Network
-    _model.getNowPlayingMovies().then((nowPlayingMovies){
-      setState(() {
-        this.nowPlayingMovies = nowPlayingMovies;
-        moviesToShow = nowPlayingMovies;
-      });
-    }).catchError((error){
+    _model.getNowPlayingMovies().then((_){}).catchError((error){
       showDialog(context: context, builder:
           (context) => AlertDialog(
         content: Text(error.toString()),
@@ -155,8 +146,11 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
     });
 
     /// Coming Soon Movies from Network
-    _model.getComingSoonMovies().then((comingSoonMovies) {
-      this.comingSoonMovies = comingSoonMovies;
+    _model.getComingSoonMovies().then((_) {}).catchError((error){
+      showDialog(context: context, builder:
+          (context) => AlertDialog(
+        content: Text(error.toString()),
+      ));
     });
   }
 

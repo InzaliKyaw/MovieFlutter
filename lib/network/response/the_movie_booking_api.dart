@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:the_movie_app_padc/data/vos/city_vo.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/network/api_constants.dart';
+import 'package:the_movie_app_padc/network/response/get_city_response.dart';
 import 'package:the_movie_app_padc/network/response/get_credits_by_movie_response.dart';
 import 'package:the_movie_app_padc/network/response/get_otp_response.dart';
 import 'package:the_movie_app_padc/network/response/movie_list_response.dart';
@@ -52,9 +54,13 @@ abstract class TheMovieBookingApi{
   Future<GetOTPResponse> getOTP(
       @Query("phone") String phoneNo);
 
+  @GET(kEndPointGetCities)
+  Future<GetCityResponse> getCities();
+
+
+
   // /// Get Cinema Day Time Slot
   // @GET("$kEndPointGetCinemaTimeSlot/{date}")
   // Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(
-  //      @Query(kDate) String date
-  //     );
+  //      @Query(kDate) String date);
 }

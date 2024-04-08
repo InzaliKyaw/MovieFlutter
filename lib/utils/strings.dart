@@ -24,6 +24,7 @@ const String kDonotReceiveOTP = "Don't receive OTP?";
 const String kResendOTP = " Resend Code";
 const String kConfirmOTP = "Confirm OTP";
 const String kSearch = "Search your location";
+const String kEnterMovie = "Please enter movie name";
 
 /// Movie Detail Page
 const String kReleaseStr = "Releasing in 5 days";

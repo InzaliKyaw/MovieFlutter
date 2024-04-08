@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:the_movie_app_padc/data/models/search_movie_bloc.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/list_items/movie_list_item_view.dart';
+import 'package:the_movie_app_padc/pages/movie_details_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/spaces.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
+import 'package:rxdart/rxdart.dart';
 
 
 class SearchMoviePage extends StatefulWidget {
@@ -17,10 +20,17 @@ class SearchMoviePage extends StatefulWidget {
 class _SearchMoviePageState extends State<SearchMoviePage> {
 
   late bool showResultGrid = false;
+  final SearchMovieBloc _searchMovieBloc = SearchMovieBloc();
 
   /// Movies To Show
   List<MovieVO> moviesToShow = [];
 
+  /// Stream Controller dwe auto close phyit twr b dispose lote pay ya mal
+  @override
+  void dispose() {
+    _searchMovieBloc.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +60,7 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
                     height: 48,
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: TextField(
+
                         decoration: const InputDecoration(
                           prefixIcon:  IconTheme(
                               data: IconThemeData(
@@ -59,14 +70,17 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
                           ),
                           focusColor: kPrimaryColor,
                           border: InputBorder.none,
-                          hintText: kSearch,
+                          hintText: kEnterMovie,
                           hintStyle: TextStyle(color: Colors.grey,
                               fontWeight: FontWeight.normal),
                         ),
-                        onChanged: (text){
-                           setState(() {
-                             showResultGrid = true;
-                           });
+                        onChanged: (query){
+                          /// Widget ka nay streamcontroller ko data htae
+                          _searchMovieBloc.queryStreamController.sink.add(query);
+                           // setState(() {
+                           //   showResultGrid = true;
+                           // });
+
                         },),
                   ),
                 ),
@@ -104,15 +118,37 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
               child: Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kMarginLarge),
-                  child: GridView.builder(gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: kMarginMedium3,
-                          crossAxisSpacing: kMarginMedium3,
-                          mainAxisExtent: kMovieListItemHeight
-                      ), itemBuilder: (context,index){
-                      return  MovieListItemView(movieVO: moviesToShow[index],);
-                  }, itemCount: 1,),
+                  child: StreamBuilder(
+                    stream: _searchMovieBloc.movieStreamController.stream,
+                    builder: (context, snapshot) {
+                      if(snapshot.hasData && snapshot.data != null){
+                        return GridView.builder(gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: kMarginMedium3,
+                            crossAxisSpacing: kMarginMedium3,
+                            mainAxisExtent: kMovieListItemHeight
+                        ), itemBuilder: (context,index){
+                          return  GestureDetector(
+                              onTap: (){
+                                Navigator.push(context,
+                                MaterialPageRoute(builder: (context)=>MovieDetailsPage(movieId:
+                                snapshot.data![index].id?.toString() ?? ""
+                                ),
+                                ),
+                                );
+                              },
+                              child: MovieListItemView(
+                                isComingSoonSelected: false,
+                                movieVO: snapshot.data![index],),
+                          );
+                        }, itemCount: snapshot.data!.length,
+                        );
+                      }else{
+                        return const SizedBox.shrink();
+                      }
+                    },
+                  ),
                 ),
               ),
             )
