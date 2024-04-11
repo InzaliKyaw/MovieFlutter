@@ -1,10 +1,5 @@
-import 'dart:ffi';
-
-import 'package:floor/floor.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
-import 'package:the_movie_app_padc/persistance/hive_constants.dart';
 
 // @dao
 // abstract class MovieDao{

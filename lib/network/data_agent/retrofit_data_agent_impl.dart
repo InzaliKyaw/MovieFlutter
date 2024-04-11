@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:the_movie_app_padc/data/vos/city_vo.dart';
 import 'package:the_movie_app_padc/data/vos/credit_vo.dart';
 import 'package:the_movie_app_padc/data/vos/error_vo.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
@@ -84,6 +85,18 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
       throw _createException(error);
     });
   }
+
+  @override
+  Future<List<CityVO>> getCities() {
+    return mApi.getCities()
+        .asStream()
+        .map((response) => response?.cities ?? [])
+        .first
+        .catchError((error){
+      throw _createException(error);
+    });
+  }
+
 
   CustomException _createException(dynamic error) {
     ErrorVO errorVO;

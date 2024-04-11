@@ -6,10 +6,12 @@ const kHiveTypeIdProductionCompanyVO = 3;
 const kHiveTypeIdProductionCountryVO = 4;
 const kHiveTypeIdSpokenLanguage = 5;
 const kOTPVO = 6;
+const kHiveTypeIdOTPVO = 7;
 
 
 /// Adapters
 const kAdapterNameMovieVO = "MovieVOAdapter";
+const kAdapterNameOTPVO = "OTPVOAdapter";
 const kAdapterNameCollectionVO = "CollectionVOAdapter";
 const kAdapterNameGenreVO = "GenreVOAdapter";
 const kAdapterNameProductionCompanyVO = "ProductionCompanyVOAdapter";
@@ -18,3 +20,4 @@ const kAdapterNameSpokenLanguageVO = "SpokenLanguageVOAdapter";
 
 /// Box Name
 const kBoxNameMovieVO = "kBoxNameMovieVO";
+const kBoxNameOTPVO = "kBoxNameOTPVO";
