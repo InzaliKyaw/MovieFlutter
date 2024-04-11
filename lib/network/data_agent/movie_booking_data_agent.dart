@@ -1,6 +1,6 @@
+import 'package:the_movie_app_padc/data/vos/city_vo.dart';
 import 'package:the_movie_app_padc/data/vos/credit_vo.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
-import 'package:the_movie_app_padc/data/vos/otp_vo.dart';
 import 'package:the_movie_app_padc/network/response/get_otp_response.dart';
 
 abstract class TheMovieBookingDataAgent{
@@ -15,4 +15,7 @@ abstract class TheMovieBookingDataAgent{
   Future<GetOTPResponse> getOTP(String phNumber);
 
   Future<GetOTPResponse> getCheckOTP(String phNumber, String otp);
+
+  Future<List<CityVO>> getCities();
+
 }

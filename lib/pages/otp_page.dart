@@ -25,13 +25,15 @@ class _OTPPageState extends State<OTPPage> {
 
   /// Model
   final MovieBookingModel _model = MovieBookingModel();
+
+  /// OTP Model
   final _pinController = TextEditingController();
 
   void signInWithPhoneNumber(){
     _model.getCheckOTP(widget.phNumber ?? "", widget.otp ?? "").then((value) {
       if(value.code == 201){
         Fluttertoast.showToast(msg: value.message ?? "");
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> LocationPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> LocationPage(userId: value.data?.id ?? 0 )));
       }else{
         Fluttertoast.showToast(msg: value.message ?? "");
       }
