@@ -8,6 +8,7 @@ import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/exception/custom_exception.dart';
 import 'package:the_movie_app_padc/network/api_constants.dart';
 import 'package:the_movie_app_padc/network/data_agent/movie_booking_data_agent.dart';
+import 'package:the_movie_app_padc/network/response/get_cinema_timeslot_response.dart';
 import 'package:the_movie_app_padc/network/response/get_otp_response.dart';
 import 'package:the_movie_app_padc/network/response/the_movie_booking_api.dart';
 
@@ -97,6 +98,14 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
     });
   }
 
+  @override
+  Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(String date, String token) {
+    return mApi.getCinemaDayTimeSlot(date, token)
+        .catchError((error){
+      throw _createException(error);
+    });
+  }
+
 
   CustomException _createException(dynamic error) {
     ErrorVO errorVO;
@@ -133,8 +142,5 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
           success: false);
     }
   }
-
-
-
 
 }

@@ -252,15 +252,20 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
   }
 
   @override
-  Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(String date) async {
+  Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(String date, String token) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'date': date};
-    final _headers = <String, dynamic>{};
+    // final _headers = <String, dynamic>{};
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetCinemaDayTimeSlotResponse>(Options(
       method: 'GET',
-      headers: _headers,
+      headers: headers,
       extra: _extra,
     )
             .compose(

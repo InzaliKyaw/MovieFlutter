@@ -59,6 +59,6 @@ abstract class TheMovieBookingApi{
   // /// Get Cinema Day Time Slot
   @GET("$kEndPointGetCinemaTimeSlot/{date}")
   Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(
-       @Query(kDate) String date
-      );
+       @Query(kDate) String date,
+      String token);
 }
