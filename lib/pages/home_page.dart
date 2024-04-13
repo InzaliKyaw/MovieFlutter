@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
@@ -108,6 +110,8 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
   /// Movies To Show
   List<MovieVO> moviesToShow = [];
 
+  StreamSubscription? _nowPlayingMoviesSubscription;
+  StreamSubscription? _comingSoonMoviesSubscription;
 
 
   late String tabType;
@@ -118,28 +122,21 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
     super.initState();
 
     /// Now Playing Movies From Database
-    /// Floor
-    // _model.getNowPlayingMoviesFromDatabase().then((nowPlayingMoviesFromDatabase) {
-    //   setState(() {
-    //     nowPlayingMovies = nowPlayingMoviesFromDatabase;
-    //     moviesToShow = nowPlayingMoviesFromDatabase;
-    //   });
-    // });
-    List<MovieVO> nowPlayingMoviesFromDatabase = _model.getNowPlayingMoviesFromDatabase();
-    setState(() {
-      nowPlayingMovies = nowPlayingMoviesFromDatabase;
-      moviesToShow = nowPlayingMoviesFromDatabase;
+
+    _nowPlayingMoviesSubscription = _model.getNowPlayingMoviesFromDatabase().listen((nowPlayingMovieFromDB) {
+      nowPlayingMovies = nowPlayingMovieFromDB;
+      if(moviesToShow.isEmpty){
+        setState(() {
+          moviesToShow = nowPlayingMovieFromDB;
+        });
+      }
     });
 
+
     /// Coming Soon Movies From Database
-    /*
-    Floor
-    _model.getComingSoonMovies().then((comingSoonMoviesFromDatabase) {
+    _comingSoonMoviesSubscription = _model.getComingSoonMoviesFromDatabase().listen((comingSoonMoviesFromDatabase) {
       comingSoonMovies = comingSoonMoviesFromDatabase;
     });
-     */
-    List<MovieVO> comingSoonMoviesFromDatabase = _model.getComingSoonMoviesFromDatabase();
-    comingSoonMovies = comingSoonMoviesFromDatabase;
 
     /// Now Playing Movies From Network
     _model.getNowPlayingMovies().then((nowPlayingMovies){
@@ -158,6 +155,13 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
     _model.getComingSoonMovies().then((comingSoonMovies) {
       this.comingSoonMovies = comingSoonMovies;
     });
+  }
+
+  @override
+  void dispose() {
+    _nowPlayingMoviesSubscription?.cancel();
+    _comingSoonMoviesSubscription?.cancel();
+    super.dispose();
   }
 
   @override

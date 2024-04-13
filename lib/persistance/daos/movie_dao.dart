@@ -37,6 +37,10 @@ class MovieDao{
     return getMovieBox().put(movieVO.id, movieVO);
   }
 
+  Stream<void> watchMovieBox(){
+    return getMovieBox().watch();
+  }
+
   List<MovieVO> getMovieByType(String type){
     return getMovieBox().values.where((movie)=> movie.type == type).toList();
   }

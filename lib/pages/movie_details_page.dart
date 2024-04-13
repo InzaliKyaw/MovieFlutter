@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/components/cinema_button_icon_custom.dart';
@@ -39,24 +41,21 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   late bool isComingSoon;
   late String data;
 
+  /// Stream Subscription
+  StreamSubscription? _movieDetailsStreamSubscription;
 
   @override
   void initState() {
     super.initState();
 
     /// Get Movie Details From Database
-    /*
-    _model.getMovieByIdFromDatabase(int.parse(widget.movieId ?? "0")).then((movie){
+    _movieDetailsStreamSubscription = _model.getMovieDetailsFromDatabase(int.parse(widget.movieId ?? "0")).listen((movieDetailsFromDatabase) {
       setState(() {
-        movieDetails = movie;
+        movieDetails = movieDetailsFromDatabase;
       });
     });
-     */
 
-    MovieVO? movieDetailsFromDatabase = _model.getMovieDetailsFromDatabase(int.parse(widget.movieId ?? "0"));
-    setState(() {
-      movieDetails = movieDetailsFromDatabase;
-    });
+
 
 
     /// Get Movie Details From Network
@@ -73,6 +72,12 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         creditList = credits;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _movieDetailsStreamSubscription?.cancel();
+    super.dispose();
   }
 
   @override

@@ -2,18 +2,12 @@
 import 'package:the_movie_app_padc/data/vos/city_vo.dart';
 import 'package:the_movie_app_padc/data/vos/credit_vo.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
-import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
-import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
-import 'package:the_movie_app_padc/data/vos/otp_vo.dart';
 import 'package:the_movie_app_padc/network/data_agent/movie_booking_data_agent.dart';
 import 'package:the_movie_app_padc/network/data_agent/retrofit_data_agent_impl.dart';
 import 'package:the_movie_app_padc/network/response/get_cinema_timeslot_response.dart';
 import 'package:the_movie_app_padc/network/response/get_otp_response.dart';
 import 'package:the_movie_app_padc/persistance/daos/movie_dao.dart';
 import 'package:the_movie_app_padc/persistance/daos/otp_dao.dart';
-import 'package:the_movie_app_padc/persistance/movie_booking_database.dart';
-
-import '../vos/movie_vo.dart';
 
 class MovieBookingModel {
 static MovieBookingModel? _singleton;
@@ -61,8 +55,11 @@ Future<List<MovieVO>> getComingSoonMovies(){
 
 Future<MovieVO> getMovieDetails(String movieId){
   return mDataAgent.getMovieDetails(movieId).then((movie) async {
-    // var database = await MovieBookingDatabase.getMovieBookingDatabase;
-    // database.movieDao.insertMovie(movie);
+    // Sync type before saving
+    MovieVO? movieFromDatabase = _movieDao.getMovieById(int.parse(movieId));
+    if(movieFromDatabase != null){
+      movie.type = movieFromDatabase.type ?? "";
+    }
     _movieDao.saveSingleMovie(movie);
     return movie;
   });
@@ -107,16 +104,16 @@ Future<List<CreditVO>> getCreditsByMovie(String movieId) {
 }
  */
 
- List<MovieVO> getNowPlayingMoviesFromDatabase(){
-   return _movieDao.getMovieByType(kMovieTypeNowPlaying);
+ Stream<List<MovieVO>> getNowPlayingMoviesFromDatabase(){
+   return _movieDao.watchMovieBox().map((_) => _movieDao.getMovieByType(kMovieTypeNowPlaying));
  }
 
-  List<MovieVO> getComingSoonMoviesFromDatabase(){
-    return _movieDao.getMovieByType(kMovieTypeComingSoon);
+  Stream<List<MovieVO>> getComingSoonMoviesFromDatabase(){
+    return _movieDao.watchMovieBox().map((_) => _movieDao.getMovieByType(kMovieTypeComingSoon));
   }
 
-  MovieVO? getMovieDetailsFromDatabase(int movieId){
-   return _movieDao.getMovieById(movieId);
+  Stream<MovieVO?> getMovieDetailsFromDatabase(int movieId){
+   return _movieDao.watchMovieBox().map((_) => _movieDao.getMovieById(movieId));
   }
 
   Future<List<CreditVO>> getCreditsByMovie(String movieId){
