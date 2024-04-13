@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:the_movie_app_padc/components/availability_labels.dart';
 import 'package:the_movie_app_padc/components/grid_time_slot_cinema.dart';
 import 'package:the_movie_app_padc/pages/seat_plan_page.dart';
@@ -27,6 +30,33 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
         isCinemaVisible = false;
       }
     });
+  }
+
+  void getCinemaFromNetwork(){
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<int> getIdFromSharedPreference() async{
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+
+    // get an integer value from 'num' key.
+    int? id =  prefs.getInt('id');
+    return id ?? 0;
+  }
+
+  Future<String> getTokenFromSharedPreference() async{
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+
+    // get an integer value from 'num' key.
+    String? token =  prefs.getString('token');
+    return token ?? "";
   }
 
   @override

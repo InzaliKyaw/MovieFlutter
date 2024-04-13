@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/pages/home_page.dart';
 import 'package:the_movie_app_padc/pages/location_page.dart';
@@ -33,12 +34,22 @@ class _OTPPageState extends State<OTPPage> {
     _model.getCheckOTP(widget.phNumber ?? "", widget.otp ?? "").then((value) {
       if(value.code == 201){
         Fluttertoast.showToast(msg: value.message ?? "");
+        saveIdAndToken(value.data?.id ?? 0, value.token ?? "");
         Navigator.push(context, MaterialPageRoute(builder: (context)=> LocationPage(userId: value.data?.id ?? 0 )));
       }else{
         Fluttertoast.showToast(msg: value.message ?? "");
       }
     });
   }
+
+  void saveIdAndToken(int id, String token) async{
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    // Save an integer value to 'num' key.
+    await prefs.setInt('id', id);
+    await prefs.setString('token', token);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
