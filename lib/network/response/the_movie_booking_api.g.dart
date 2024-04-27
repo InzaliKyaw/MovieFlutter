@@ -191,7 +191,7 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
-              baseUrl,
+              kBaseUrlMovieCinema,
             ))));
     final value = GetOTPResponse.fromJson(_result.data!);
     return value;
@@ -292,11 +292,16 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
     String token,
   ) async {
     final _extra = <String, dynamic>{};
+    final _headers={
+      'Content-Type':'application/json',
+      'Accept':'application/json',
+      'Authorization':'Bearer $token',
+    };
     final queryParameters = <String, dynamic>{
       r'booking_date': date,
       r'cinema_day_timeslot_id': daytimeId,
     };
-    final _headers = <String, dynamic>{};
+
     const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GetSeatResponse>(Options(
@@ -313,7 +318,7 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
-                  kBaseUrlMovieCinema,
+              kBaseUrlMovieCinema,
             ))));
     final value = GetSeatResponse.fromJson(_result.data!);
     return value;

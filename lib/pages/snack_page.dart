@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:the_movie_app_padc/components/cinema_button2.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/data/vos/snack_vo.dart';
 import 'package:the_movie_app_padc/list_items/snack_list_item_view.dart';
@@ -40,6 +39,9 @@ class _SnackPageState extends State<SnackPage> {
       for(var list in snackListAll!){
         snackList.add(list);
       }
+      setState(() {
+        snackList;
+      });
     }).catchError((error){
       showDialog(context: context, builder: (context)=> AlertDialog(
         content: Text(error.toString()),

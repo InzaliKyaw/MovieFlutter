@@ -47,7 +47,7 @@ class _SnackListItemViewState extends State<SnackListItemView> {
           /// Food Img
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
+            child: Image.network(
               widget.snackVO?.snackUrl ?? "",
               height: 100,
               width: MediaQuery.of(context).size.width,

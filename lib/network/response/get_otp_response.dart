@@ -17,6 +17,7 @@ class GetOTPResponse{
   @HiveField(1)
   String? message;
 
+  /// save data to OTP
   @JsonKey(name:"data")
   @HiveField(2)
   OTPVO? data;
