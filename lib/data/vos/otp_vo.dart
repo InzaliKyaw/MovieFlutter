@@ -31,6 +31,7 @@ class OTPVO{
   @HiveField(5)
   String? profileImage;
 
+
   OTPVO(this.id, this.name, this.email, this.phone, this.totalExpense,
       this.profileImage);
 
