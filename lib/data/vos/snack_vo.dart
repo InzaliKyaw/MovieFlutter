@@ -1,13 +1,30 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'snack_vo.g.dart';
+@JsonSerializable()
 class SnackVO{
-  String name = "";
-  String price = "";
-  SnackVO(this.name, this.price);
+
+  @JsonKey(name:"id")
+  int? id;
+
+  @JsonKey(name:"name")
+  String? name;
+
+  @JsonKey(name:"description")
+  String? description;
+
+  @JsonKey(name:"price")
+  int? price;
+
+  @JsonKey(name:"category_id")
+  int? categoryId;
+
+  @JsonKey(name:"image")
+  String? snackUrl;
+
+  SnackVO(this.id, this.name, this.description, this.price, this.categoryId,
+      this.snackUrl);
+
+  factory SnackVO.fromJson(Map<String, dynamic> json) => _$SnackVOFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SnackVOToJson(this);
 }
-List<SnackVO> snackList = [
-  SnackVO("Burger Combo", "2000Ks"),
-  SnackVO("Pizza Combo", "2000Ks"),
-  SnackVO("Skewer Combo", "2000Ks"),
-  SnackVO("Squid Combo", "2000Ks"),
-  SnackVO("Ice Cream", "2000Ks"),
-  SnackVO("Popcorn Combo", "2000Ks"),
-];

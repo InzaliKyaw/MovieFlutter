@@ -14,6 +14,8 @@ const String kEndPointGetCinemaTimeSlot = "/api/v2/cinema-day-timeslots";
 const String kEndPointCheckOTP = "/api/v2/check-otp";
 const String kEndPointGetOTP = "/api/v2/get-otp";
 const String kEndPointGetCities = "/api/v2/cities";
+const String kEndPointGetSeatPlan = "/api/v2/seat-plan";
+const String kEndPointGetSnackPlan = "/api/v2/snacks";
 
 
 /// Parameters
@@ -25,6 +27,8 @@ const String kParamOtp = "otp";
 const String kDate = "date";
 const String kPhone = "959958283086";
 const String kOtp = "123456";
+const String kBookingDate = "booking_date";
+const String kCinemaDayTimeSlot = "cinema_day_timeslot_id";
 
 /// Constant Values
 const String kApiKey = "5c3f58f2956295064c0a63ba8c6c743e";

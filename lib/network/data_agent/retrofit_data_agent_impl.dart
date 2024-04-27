@@ -10,6 +10,8 @@ import 'package:the_movie_app_padc/network/api_constants.dart';
 import 'package:the_movie_app_padc/network/data_agent/movie_booking_data_agent.dart';
 import 'package:the_movie_app_padc/network/response/get_cinema_timeslot_response.dart';
 import 'package:the_movie_app_padc/network/response/get_otp_response.dart';
+import 'package:the_movie_app_padc/network/response/get_seat_response.dart';
+import 'package:the_movie_app_padc/network/response/get_snack_response.dart';
 import 'package:the_movie_app_padc/network/response/the_movie_booking_api.dart';
 
 class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
@@ -141,6 +143,22 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
           statusMessage: "Error parsing DioError: $e",
           success: false);
     }
+  }
+
+  @override
+  Future<GetSeatResponse> getSeatResponse(String date, int cinemaDayTimeslotId, String token) {
+    return mApi.getSeat(date, cinemaDayTimeslotId, token)
+        .catchError((error){
+      throw _createException(error);
+    });
+  }
+
+  @override
+  Future<GetSnackResponse> getSnackResponse(String token) {
+    return mApi.getSnack(token)
+        .catchError((error){
+      throw _createException(error);
+    });
   }
 
 }

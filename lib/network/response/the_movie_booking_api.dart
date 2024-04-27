@@ -6,9 +6,9 @@ import 'package:the_movie_app_padc/network/response/get_city_response.dart';
 import 'package:the_movie_app_padc/network/response/get_credits_by_movie_response.dart';
 import 'package:the_movie_app_padc/network/response/get_otp_response.dart';
 import 'package:the_movie_app_padc/network/response/movie_list_response.dart';
-
 import 'get_cinema_timeslot_response.dart';
-
+import 'get_seat_response.dart';
+import 'get_snack_response.dart';
 part 'the_movie_booking_api.g.dart';
 
 @RestApi(baseUrl: kBaseUrl)
@@ -43,7 +43,6 @@ abstract class TheMovieBookingApi{
       @Query(kParamPage) String page
       );
 
-
   @POST(kEndPointCheckOTP)
   Future<GetOTPResponse> getCheckOTP(
       @Query(kParamPhone) String phoneNo,
@@ -56,9 +55,24 @@ abstract class TheMovieBookingApi{
   @GET(kEndPointGetCities)
   Future<GetCityResponse> getCities();
 
-  // /// Get Cinema Day Time Slot
-  @GET("$kEndPointGetCinemaTimeSlot/{date}")
+  // Get Cinema Day Time Slot
+  // Add Header
+  @GET("$kEndPointGetCinemaTimeSlot")
   Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(
        @Query(kDate) String date,
       String token);
+
+  // Get Seat Plan
+  // Add Header
+  @GET(kEndPointGetSeatPlan)
+  Future<GetSeatResponse> getSeat(
+      @Query(kBookingDate) String date,
+      @Query(kCinemaDayTimeSlot) int daytimeId,
+      String token
+      );
+
+  // Get Snack
+  // Add Header
+  @GET(kEndPointGetSnackPlan)
+  Future<GetSnackResponse> getSnack(String token);
 }

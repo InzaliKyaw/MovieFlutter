@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/components/cinema_button2.dart';
+import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
+import 'package:the_movie_app_padc/data/vos/snack_vo.dart';
 import 'package:the_movie_app_padc/list_items/snack_list_item_view.dart';
 import 'package:the_movie_app_padc/pages/check_out_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
+import 'package:the_movie_app_padc/utils/get_token.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
 import 'package:the_movie_app_padc/utils/spaces.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
@@ -16,7 +19,34 @@ class SnackPage extends StatefulWidget {
   State<SnackPage> createState() => _SnackPageState();
 }
 
+
+
+
 class _SnackPageState extends State<SnackPage> {
+
+  @override
+  void initState() {
+    getSnacksFromNetwork();
+    super.initState();
+  }
+  final MovieBookingModel _model = MovieBookingModel();
+  List<SnackVO> snackList = [];
+
+  Future<void> getSnacksFromNetwork() async{
+    String token = await getTokenFromSharedPreference();
+    _model.getSnackResponse(token).then((value) {
+      List<SnackVO>? snackListAll = [];
+      snackListAll = value.snackList;
+      for(var list in snackListAll!){
+        snackList.add(list);
+      }
+    }).catchError((error){
+      showDialog(context: context, builder: (context)=> AlertDialog(
+        content: Text(error.toString()),
+      ));
+    });
+  }
+
   /// Now showing or coming soon
   String selectedText = kAll;
   int foodItemCount = 0;
@@ -126,6 +156,7 @@ class _SnackPageState extends State<SnackPage> {
                             crossAxisSpacing: 24,
                             mainAxisExtent: 200),
                     itemBuilder: (context, index) {
+                      SnackVO snackVO = snackList[index];
                       return SnackListItemView( foodItemCount: foodItemCount,
                         onTapMinus: () {
                         setState(() {
@@ -145,9 +176,9 @@ class _SnackPageState extends State<SnackPage> {
                             isPlusMinusVisible = false;
                             }
                         });
-                        });
+                        }, snackVO: snackVO,);
                     },
-                    itemCount: 20,
+                    itemCount: snackList.length,
                   ),
                 ),
 
@@ -233,7 +264,7 @@ class SnackButton extends StatelessWidget {
                           ),),
                           /// Plus Minus
                           Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: SizedBox(
                               width: 100,
                               height:28,

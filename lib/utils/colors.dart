@@ -13,6 +13,7 @@ const Color kChipBackground = Color(0xFF555555);
 const Color kRedPinkColor = Color(0xFFFF00B8);
 const Color kGrey2 = Color(0xFF222222);
 const Color kGreyC8 = Color(0xFFC8C8C8);
+const Color kWhite = Color(0xFFffffff);
 
 const Color kMovieDetailsCensorRatingGradientStartColor = Color.fromRGBO(34, 34, 34, 0.8);
 const Color kMovieDetailsCensorRatingGradientEndColor = Color.fromRGBO(17, 17, 17, 0.8);

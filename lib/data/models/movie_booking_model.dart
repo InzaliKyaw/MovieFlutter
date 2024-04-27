@@ -2,18 +2,14 @@
 import 'package:the_movie_app_padc/data/vos/city_vo.dart';
 import 'package:the_movie_app_padc/data/vos/credit_vo.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
-import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
-import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
-import 'package:the_movie_app_padc/data/vos/otp_vo.dart';
 import 'package:the_movie_app_padc/network/data_agent/movie_booking_data_agent.dart';
 import 'package:the_movie_app_padc/network/data_agent/retrofit_data_agent_impl.dart';
 import 'package:the_movie_app_padc/network/response/get_cinema_timeslot_response.dart';
 import 'package:the_movie_app_padc/network/response/get_otp_response.dart';
+import 'package:the_movie_app_padc/network/response/get_seat_response.dart';
+import 'package:the_movie_app_padc/network/response/get_snack_response.dart';
 import 'package:the_movie_app_padc/persistance/daos/movie_dao.dart';
 import 'package:the_movie_app_padc/persistance/daos/otp_dao.dart';
-import 'package:the_movie_app_padc/persistance/movie_booking_database.dart';
-
-import '../vos/movie_vo.dart';
 
 class MovieBookingModel {
 static MovieBookingModel? _singleton;
@@ -83,30 +79,6 @@ Future<GetOTPResponse> getCheckOTP(String phNumber, String otp){
 
 }
 
-/* Floor
-/// Get Now Playing Movie From Database
-Future<List<MovieVO>> getNowPlayingMoviesFromDatabase() async {
-  var database = await MovieBookingDatabase.getMovieBookingDatabase;
-  return database.movieDao.getMovieByType(kMovieTypeNowPlaying);
-}
-
-/// Get Coming Soon Movie From Database
-Future<List<MovieVO>> getComingSoonMoviesFromDatabase() async {
-  var database = await MovieBookingDatabase.getMovieBookingDatabase;
-  return database.movieDao.getMovieByType(kMovieTypeComingSoon);
-}
-
-/// Get Movie By Id from Database
-Future<MovieVO?> getMovieByIdFromDatabase(int movieId) async {
-  var database = await MovieBookingDatabase.getMovieBookingDatabase;
-  return database.movieDao.getMovieById(movieId);
-}
-
-Future<List<CreditVO>> getCreditsByMovie(String movieId) {
-  return mDataAgent.getCreditsByMovie(movieId);
-}
- */
-
  List<MovieVO> getNowPlayingMoviesFromDatabase(){
    return _movieDao.getMovieByType(kMovieTypeNowPlaying);
  }
@@ -134,6 +106,16 @@ Future<List<CreditVO>> getCreditsByMovie(String movieId) {
   Future<GetCinemaDayTimeSlotResponse> getCinemaDayTime(String date, String token){
     return mDataAgent.getCinemaDayTimeSlot(date, token);
   }
+
+  Future<GetSeatResponse> getSeatResponse(String date, int cinemaDayTimeslotId, String token){
+   return mDataAgent.getSeatResponse(date, cinemaDayTimeslotId, token);
+  }
+
+  Future<GetSnackResponse> getSnackResponse(String token){
+   return mDataAgent.getSnackResponse(token);
+  }
+
+
 
 }
 

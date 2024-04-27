@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/components/availability_labels.dart';
 import 'package:the_movie_app_padc/components/ticket_button.dart';
-import 'package:the_movie_app_padc/data/vos/seat_vo.dart';
+import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
+import 'package:the_movie_app_padc/data/vos/seat_plan_vo.dart';
 import 'package:the_movie_app_padc/pages/snack_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
+import 'package:the_movie_app_padc/utils/get_token.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 
 class SeatPlanPage extends StatefulWidget {
-  const SeatPlanPage({super.key});
+  final int cinemaDayTimeslotId;
+   const SeatPlanPage({super.key, required this.cinemaDayTimeslotId});
 
   @override
   State<SeatPlanPage> createState() => _SeatPlanPageState();
@@ -18,9 +21,37 @@ class SeatPlanPage extends StatefulWidget {
 class _SeatPlanPageState extends State<SeatPlanPage> {
   bool isSeatVisible = true;
   bool isTextVisible = false;
+  final MovieBookingModel _model = MovieBookingModel();
   Color seatColor = Colors.grey;
   double _value = 20;
   double scale = 1;
+  List<SeatPlanVO> seatList = [];
+
+  Future<void> getSeatPlanFromNetwork(String chosenDate, int cinemaDayTimeSlotid) async{
+    String token = await getTokenFromSharedPreference();
+    _model.getSeatResponse(chosenDate, cinemaDayTimeSlotid, token).then((value) {
+      List<List<SeatPlanVO>>? seatPlan = [];
+       seatPlan = value.seatPlanList;
+       for(var list in seatPlan!){
+          for(var l in list){
+            seatList.add(l);
+          }
+       }
+      setState(() {
+        seatList;
+      });
+    }).catchError((error){
+      showDialog(context: context, builder: (context)=> AlertDialog(
+        content: Text(error.toString()),
+      ));
+    });
+  }
+
+  @override
+  void initState() {
+    getSeatPlanFromNetwork("2022-08-18", 7);
+    super.initState();
+  }
 
 
   @override
@@ -74,12 +105,13 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                   padding: const EdgeInsets.only(left: 20.0),
                   child: GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 12,
+                      crossAxisCount: 14,
                       mainAxisSpacing: 8,
                       crossAxisSpacing: 2,
                     ),
                     itemBuilder: (context, index) {
-                      SeatVO seat = seatList[index];
+
+                      SeatPlanVO seat = seatList[index];
                       if (seat.type == "available") {
                         seatColor = Colors.white;
                         isTextVisible = false;
@@ -106,7 +138,7 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                           Visibility(
                             visible: isTextVisible,
                             child: Text(
-                              seat.text,
+                              seat.symbol!,
                               style: const TextStyle(color: Colors.grey),
                             ),
                           ),
@@ -147,6 +179,7 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                         setState(() {
                           if(_value < 100){
                             _value += 10;
+                            seatList;
                           }
                         });
                       },
@@ -175,6 +208,7 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                       setState(() {
                         if(_value > 0){
                           _value -= 10;
+                          seatList;
                         }
                       });
                     },
