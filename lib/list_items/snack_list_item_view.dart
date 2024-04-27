@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/components/cinema_button2.dart';
+import 'package:the_movie_app_padc/data/vos/snack_vo.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
@@ -12,12 +13,14 @@ class SnackListItemView extends StatefulWidget {
   // final void Function()? onTap;
   final void Function()? onTapMinus;
   final void Function() onTapAdd;
+  final SnackVO? snackVO;
 
    const SnackListItemView({
     super.key,
     required this.foodItemCount,
     required this.onTapMinus,
-    required this.onTapAdd
+    required this.onTapAdd,
+    required this.snackVO
   });
 
   @override
@@ -45,24 +48,24 @@ class _SnackListItemViewState extends State<SnackListItemView> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset(
-              kDummyFoodImg,
+              widget.snackVO?.snackUrl ?? "",
               height: 100,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),
           ),
-          const Align(
+           Align(
             alignment:Alignment.center,
             child: Text(
-              kSnackName,
-              style: TextStyle(
+              widget.snackVO?.name ?? "",
+              style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
             ),
           ),
-          const Text(
-            kFoodPrice,
-            style: TextStyle(
+           Text(
+             widget.snackVO?.price.toString() ?? "0",
+             style: const TextStyle(
                 color: kPrimaryColor,
                 fontSize: kTextSmall,
                 fontWeight: FontWeight.bold),

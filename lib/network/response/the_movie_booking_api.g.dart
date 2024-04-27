@@ -191,7 +191,7 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
-              kBaseUrlMovieCinema,
+              baseUrl,
             ))));
     final value = GetOTPResponse.fromJson(_result.data!);
     return value;
@@ -218,7 +218,7 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
-              kBaseUrlMovieCinema,
+                  kBaseUrlMovieCinema,
             ))));
     final value = GetOTPResponse.fromJson(_result.data!);
     return value;
@@ -245,41 +245,108 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
-              kBaseUrlMovieCinema,
+                  kBaseUrlMovieCinema,
             ))));
     final value = GetCityResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(String date, String token) async {
+  Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(
+    String date,
+    String token,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'date': date};
-    // final _headers = <String, dynamic>{};
-    final headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+    final _headers={
+      'Content-Type':'application/json',
+      'Accept':'application/json',
+      'Authorization':'Bearer $token',
     };
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetCinemaDayTimeSlotResponse>(Options(
       method: 'GET',
-      headers: headers,
+      headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/api/v2/cinema-day-timeslots/{date}',
+              '/api/v2/cinema-day-timeslots',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
-              baseUrl,
+              kBaseUrlMovieCinema,
             ))));
     final value = GetCinemaDayTimeSlotResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GetSeatResponse> getSeat(
+    String date,
+    int daytimeId,
+    String token,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'booking_date': date,
+      r'cinema_day_timeslot_id': daytimeId,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GetSeatResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v2/seat-plan',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+                  kBaseUrlMovieCinema,
+            ))));
+    final value = GetSeatResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GetSnackResponse> getSnack(String token) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers={
+      'Content-Type':'application/json',
+      'Accept':'application/json',
+      'Authorization':'Bearer $token',
+    };
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GetSnackResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v2/snacks',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              kBaseUrlMovieCinema,
+            ))));
+    final value = GetSnackResponse.fromJson(_result.data!);
     return value;
   }
 
