@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_movie_app_padc/blocs/search_movie_bloc.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/list_items/movie_list_item_view.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
@@ -17,6 +18,13 @@ class SearchMoviePage extends StatefulWidget {
 class _SearchMoviePageState extends State<SearchMoviePage> {
 
   late bool showResultGrid = false;
+  final SearchMovieBloc _searchMovieBloc = SearchMovieBloc();
+
+  @override
+  void dispose(){
+    _searchMovieBloc.onDispose();
+    super.dispose();
+  }
 
   /// Movies To Show
   List<MovieVO> moviesToShow = [];
@@ -50,6 +58,7 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
                     height: 48,
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: TextField(
+                       style: const TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           prefixIcon:  IconTheme(
                               data: IconThemeData(
@@ -63,7 +72,8 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
                           hintStyle: TextStyle(color: Colors.grey,
                               fontWeight: FontWeight.normal),
                         ),
-                        onChanged: (text){
+                        onChanged: (query){
+                           _searchMovieBloc.queryStreamController.sink.add(query);
                            setState(() {
                              showResultGrid = true;
                            });
@@ -99,20 +109,26 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
 
             verticalSpacing(8),
             /// Search Result View
-            Visibility(
-              visible: showResultGrid,
-              child: Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: kMarginLarge),
-                  child: GridView.builder(gridDelegate:
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kMarginLarge),
+                child: StreamBuilder(
+                  stream: _searchMovieBloc.movieStreamController.stream,
+                  builder: (context, snapshot){
+                    if(snapshot.hasData && snapshot.data != null){
+                      return GridView.builder(gridDelegate:
                       const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: kMarginMedium3,
                           crossAxisSpacing: kMarginMedium3,
                           mainAxisExtent: kMovieListItemHeight
                       ), itemBuilder: (context,index){
-                      return  MovieListItemView(movieVO: moviesToShow[index],);
-                  }, itemCount: 1,),
+                        return  MovieListItemView(movieVO: snapshot.data![index],);
+                      }, itemCount: snapshot.data!.length,);
+                    }else{
+                      return const SizedBox.shrink();
+                    }
+                  },
                 ),
               ),
             )

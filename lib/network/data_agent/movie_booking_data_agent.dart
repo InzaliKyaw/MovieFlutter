@@ -20,4 +20,6 @@ abstract class TheMovieBookingDataAgent{
   Future<List<CityVO>> getCities();
 
   Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(String date, String token);
+
+  Future<List<MovieVO>> getSearchMovie(String query);
 }

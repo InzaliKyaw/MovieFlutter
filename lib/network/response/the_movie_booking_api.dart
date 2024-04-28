@@ -61,4 +61,11 @@ abstract class TheMovieBookingApi{
   Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(
        @Query(kDate) String date,
       String token);
+
+  // Movie DB End Point
+  @GET(kEndPointSearchCinema)
+  Future<MovieListResponse> getSearchMovie(
+      @Query(kParamApiKey) String apiKey,
+      @Query(kParamQuery) String query
+      );
 }

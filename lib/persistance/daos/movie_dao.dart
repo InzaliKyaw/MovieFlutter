@@ -1,22 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 
-// @dao
-// abstract class MovieDao{
-// Primary key tuu 
-//   @Insert(onConflict: OnConflictStrategy.replace)
-//   Future<void> insertMovieList(List<MovieVO> movie);
-//
-//   @Insert(onConflict: OnConflictStrategy.replace)
-//   Future<void> insertMovie(MovieVO movie);
-//
-//   @Query("SELECT * FROM movies WHERE id=:movieId")
-//   Future<MovieVO?> getMovieById(int movieId);
-//
-//   @Query("SELECT * FROM movies WHERE type=:type")
-//   Future<List<MovieVO>> getMovieByType(String type);
-// }
-
 class MovieDao{
   /// Must be Singleton
   static final MovieDao _singleton = MovieDao._internal();

@@ -143,4 +143,15 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
     }
   }
 
+  @override
+  Future<List<MovieVO>> getSearchMovie(String query) {
+    return mApi.getSearchMovie( kApiKey,query)
+        .asStream()
+        .map((response) => response.results ?? [])
+        .first
+        .catchError((error){
+      throw _createException(error);
+    });
+  }
+
 }

@@ -80,30 +80,6 @@ Future<GetOTPResponse> getCheckOTP(String phNumber, String otp){
 
 }
 
-/* Floor
-/// Get Now Playing Movie From Database
-Future<List<MovieVO>> getNowPlayingMoviesFromDatabase() async {
-  var database = await MovieBookingDatabase.getMovieBookingDatabase;
-  return database.movieDao.getMovieByType(kMovieTypeNowPlaying);
-}
-
-/// Get Coming Soon Movie From Database
-Future<List<MovieVO>> getComingSoonMoviesFromDatabase() async {
-  var database = await MovieBookingDatabase.getMovieBookingDatabase;
-  return database.movieDao.getMovieByType(kMovieTypeComingSoon);
-}
-
-/// Get Movie By Id from Database
-Future<MovieVO?> getMovieByIdFromDatabase(int movieId) async {
-  var database = await MovieBookingDatabase.getMovieBookingDatabase;
-  return database.movieDao.getMovieById(movieId);
-}
-
-Future<List<CreditVO>> getCreditsByMovie(String movieId) {
-  return mDataAgent.getCreditsByMovie(movieId);
-}
- */
-
  Stream<List<MovieVO>> getNowPlayingMoviesFromDatabase(){
    return _movieDao.watchMovieBox().map((_) => _movieDao.getMovieByType(kMovieTypeNowPlaying));
  }
@@ -130,6 +106,10 @@ Future<List<CreditVO>> getCreditsByMovie(String movieId) {
 
   Future<GetCinemaDayTimeSlotResponse> getCinemaDayTime(String date, String token){
     return mDataAgent.getCinemaDayTimeSlot(date, token);
+  }
+
+  Future<List<MovieVO>> getSearchCinema(String query){
+   return mDataAgent.getSearchMovie(query);
   }
 
 }
