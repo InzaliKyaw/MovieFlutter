@@ -88,6 +88,11 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
     return id ?? 0;
   }
 
+  /// Date VO  String, isSelected Boolean
+  /// isSelected False for all at initState
+  /// First Item -> true
+  /// check with isSelected
+  /// onTap() -> Date ko yuu => check with date and set isSelected -> true , setOther to true and then add to setState
 
   List<String> generateTwoWeeks(){
     final now = DateTime.now();
@@ -264,7 +269,8 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
               thirdColor: kRedPinkColor,
             ),
           ),
-
+          /// Cinema ko stateful
+          /// the whole item with isExpanded, Boolean
           /// Cinema List
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {

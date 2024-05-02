@@ -23,6 +23,7 @@ class SnackPage extends StatefulWidget {
 
 class _SnackPageState extends State<SnackPage> {
 
+  /// Quantity value in snack_VO
   @override
   void initState() {
     getSnacksFromNetwork();
