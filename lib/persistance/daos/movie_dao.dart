@@ -29,7 +29,7 @@ class MovieDao{
     return getMovieBox().values.where((movie)=> movie.type == type).toList();
   }
 
-  MovieVO? getMovieById(int movieId){
+  MovieVO? getMovieById(String movieId){
     return getMovieBox().get(movieId);
   }
 
