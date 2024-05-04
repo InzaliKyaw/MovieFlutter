@@ -13,6 +13,7 @@ const double kMarginXXLarge = 48;
 const double kMargin34 = 34;
 const double kMargin60 = 60;
 const double kMargin64 = 64;
+const double kMargin100 = 100;
 
 const double kTextXSmall = 10;
 const double kTextSmall = 12;

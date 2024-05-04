@@ -1,10 +1,8 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:the_movie_app_padc/blocs/movie_details_bloc.dart';
 import 'package:the_movie_app_padc/components/cinema_button_icon_custom.dart';
 import 'package:the_movie_app_padc/components/ticket_button.dart';
-import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/data/vos/credit_vo.dart';
 import 'package:the_movie_app_padc/pages/time_slot_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
@@ -13,6 +11,7 @@ import 'package:the_movie_app_padc/utils/images.dart';
 import 'package:the_movie_app_padc/pages/cast_item_view.dart';
 import 'package:the_movie_app_padc/utils/spaces.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
+import 'package:the_movie_app_padc/blocs/movie_details_bloc.dart';
 
 import '../data/vos/movie_vo.dart';
 
@@ -32,7 +31,8 @@ class MovieDetailsPage extends StatefulWidget {
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   /// Model
-  final MovieBookingModel _model = MovieBookingModel();
+  // final MovieBookingModel _model = MovieBookingModel();
+  late MovieDetailsBloc _bloc;
 
   /// State
   MovieVO? movieDetails;
@@ -41,42 +41,16 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   late bool isComingSoon;
   late String data;
 
-  /// Stream Subscription
-  StreamSubscription? _movieDetailsStreamSubscription;
+
 
   @override
   void initState() {
+     _bloc = MovieDetailsBloc(widget.movieId ?? "0");
     super.initState();
-
-    /// Get Movie Details From Database
-    _movieDetailsStreamSubscription = _model.getMovieDetailsFromDatabase(int.parse(widget.movieId ?? "0")).listen((movieDetailsFromDatabase) {
-      setState(() {
-        movieDetails = movieDetailsFromDatabase;
-      });
-    });
-
-
-
-
-    /// Get Movie Details From Network
-    _model.getMovieDetails(widget.movieId ?? "").then((movie){
-      setState(() {
-        movieDetails = movie;
-      });
-    });
-
-
-    /// Get Credit by Movie From Network
-    _model.getCreditsByMovie(widget.movieId ?? "").then((credits){
-      setState(() {
-        creditList = credits;
-      });
-    });
   }
 
   @override
   void dispose() {
-    _movieDetailsStreamSubscription?.cancel();
     super.dispose();
   }
 
@@ -92,161 +66,169 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     });
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            /// App Bar
-            Padding(padding: const EdgeInsets.symmetric(horizontal: kMarginLarge, vertical: kMarginMedium),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.chevron_left,
-                      color: Colors.white,
-                      size: kMarginLarge,
-                    ),
-                  ),
-                  const Spacer(),
-                  const Icon(
-                    Icons.share,
-                    color: Colors.white,
-                    size: kMarginXLarge,
-                  )
-                ],
-              ),),
-            /// Body
-             SingleChildScrollView(
-              child: Column(
-                children: [
-                  /// Movie Large Image, Small Image and Info
-                   MovieLargeImageSmallImageAndInfoView(movieVO: movieDetails),
-
-                  /// Spacer
-                  const SizedBox(
-                    height: kMargin30,
-                  ),
-
-                  /// Censor Rating, Release Date and Duration
-                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kMarginMedium2),
-                    child: Container(
-                         height: 60,
-                        child: CensorRatingReleaseDateAndDurationView(
-                          movieVO: movieDetails,
-                        )),
-                  ),
-                  verticalSpacing(14),
-                  /// Release Card
-                  Visibility(
-                    visible: isComingSoon,
-                    child: Padding(
-                      padding: const EdgeInsets.all(14.0),
-                      child: Container(
-                        height: 180,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient:  const LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  kNowPlayingAndComingSoonSelectedTextColor,
-                                  kNowPlayingAndComingSoontradientEndColor
-                                ])),
-
-                        child: Row(
-                              children: [
-                                const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 8.0,top: 24),
-                                      child: Text(kReleaseStr,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: kTextRegular2x,
-                                            fontWeight: FontWeight.w700
-                                        ),),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        kReleaseDescription,
-                                        style: TextStyle(
-                                            color: kGreyC8,
-                                            fontSize: kTextRegular,
-                                            fontWeight: FontWeight.w600
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(14.0,),
-                                      child: CinemaButtonIconCustom(
-                                          img: kNotification2Icon,
-                                          label: kSetNotification,
-                                          bgColor: kPrimaryColor,
-                                          imgHeight: 24, imgWidth: 24,
-                                          txtColor: Colors.black, radius: 5),
-                                    )
-                                  ],
-                                ),
-                                Expanded(
-                                  child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Image.asset(kReleaseImg,
-                                        height: 200,),
-                                      )),
-                                )
-                              ],
-                            )
+      body: StreamBuilder<MovieVO?>(
+        stream: _bloc.movieDetailsSubject,
+        builder: (context, snapshot) => SafeArea(
+          child: (snapshot.data == null)
+              ? const Center(
+            child: CircularProgressIndicator(),
+        ) : Stack(
+            children: [
+              /// App Bar
+              Padding(padding: const EdgeInsets.symmetric(horizontal: kMarginLarge, vertical: kMarginMedium),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(
+                        Icons.chevron_left,
+                        color: Colors.white,
+                        size: kMarginLarge,
                       ),
                     ),
-                  ),
-                  /// Spacer
-                  const SizedBox(height: kMargin30,),
+                    const Spacer(),
+                    const Icon(
+                      Icons.share,
+                      color: Colors.white,
+                      size: kMarginXLarge,
+                    )
+                  ],
+                ),),
+              /// Body
+               SingleChildScrollView(
+                child: Column(
+                  children: [
+                    /// Movie Large Image, Small Image and Info
+                     MovieLargeImageSmallImageAndInfoView(movieVO: snapshot.data),
 
-                  /// Story Line View
-                   Padding(padding: const EdgeInsets.symmetric(horizontal: kMarginMedium2),
-                  child: StoryLine(movieVO: movieDetails,),),
-
-                  ///
-                  Visibility(
-                    visible: !(creditList?.isEmpty ?? true),
-                    child: CastView(
-                      creditList: creditList ?? []
+                    /// Spacer
+                    const SizedBox(
+                      height: kMargin30,
                     ),
-                  )
-                ],
-              ),
-            ),
 
+                    /// Censor Rating, Release Date and Duration
+                     Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: kMarginMedium2),
+                      child: Container(
+                           height: 60,
+                          child: CensorRatingReleaseDateAndDurationView(
+                            movieVO: snapshot.data,
+                          )),
+                    ),
+                    verticalSpacing(14),
+                    /// Release Card
+                    Visibility(
+                      visible: isComingSoon,
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Container(
+                          height: 180,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient:  const LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    kNowPlayingAndComingSoonSelectedTextColor,
+                                    kNowPlayingAndComingSoontradientEndColor
+                                  ])),
 
-            /// Bottom Gradient and Booking Button
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: kMovieDetailsBottomContainerHeight,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, kBackgroundColor]
-                  )
+                          child: Row(
+                                children: [
+                                  const Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 8.0,top: 24),
+                                        child: Text(kReleaseStr,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: kTextRegular2x,
+                                              fontWeight: FontWeight.w700
+                                          ),),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          kReleaseDescription,
+                                          style: TextStyle(
+                                              color: kGreyC8,
+                                              fontSize: kTextRegular,
+                                              fontWeight: FontWeight.w600
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(14.0,),
+                                        child: CinemaButtonIconCustom(
+                                            img: kNotification2Icon,
+                                            label: kSetNotification,
+                                            bgColor: kPrimaryColor,
+                                            imgHeight: 24, imgWidth: 24,
+                                            txtColor: Colors.black, radius: 5),
+                                      )
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.asset(kReleaseImg,
+                                          height: 200,),
+                                        )),
+                                  )
+                                ],
+                              )
+                        ),
+                      ),
+                    ),
+                    /// Spacer
+                    const SizedBox(height: kMargin30,),
+
+                    /// Story Line View
+                     Padding(padding: const EdgeInsets.symmetric(horizontal: kMarginMedium2),
+                    child: StoryLine(movieVO: snapshot.data,),),
+
+                    ///
+                    StreamBuilder<List<CreditVO>?>(
+                      stream: _bloc.creditListSubject,
+                      builder: (context, creditListSnapShot) =>
+                        Visibility(
+                        visible: !(creditListSnapShot.data?.isEmpty ?? true),
+                        child: CastView(
+                          creditList: creditListSnapShot.data ?? []
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                child: Center(
-                  child: TicketButton(btnText: kBookingLabel, btnColor: kPrimaryColor, txtColor: Colors.black, onTap: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=> TimeSlotPage()));
-                  }),
+              ),
+
+              /// Bottom Gradient and Booking Button
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: kMovieDetailsBottomContainerHeight,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.transparent, kBackgroundColor]
+                    )
+                  ),
+                  child: Center(
+                    child: TicketButton(btnText: kBookingLabel, btnColor: kPrimaryColor, txtColor: Colors.black, onTap: (){
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=> TimeSlotPage()));
+                    }),
+                  ),
                 ),
               ),
-            ),
-
-          ],
+            ],
+          ),
         ),
       ),
     );

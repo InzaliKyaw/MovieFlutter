@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:the_movie_app_padc/blocs/home_bloc.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/list_items/movie_list_item_view.dart';
 import 'package:the_movie_app_padc/pages/movie_details_page.dart';
@@ -9,7 +9,6 @@ import 'package:the_movie_app_padc/pages/search_movie_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 
 class HomePage extends StatefulWidget {
@@ -96,7 +95,8 @@ class HomeScreenBodyView extends StatefulWidget {
 
 class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
 
-  final MovieBookingModel _model = MovieBookingModel();
+  // final MovieBookingModel _model = MovieBookingModel();
+  final HomeBloc _bloc = HomeBloc();
 
   /// Now Showing or Coming Soon
   String selectedText = kNowShowingLabel;
@@ -120,47 +120,12 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
   @override
   void initState(){
     super.initState();
-
-    /// Now Playing Movies From Database
-
-    _nowPlayingMoviesSubscription = _model.getNowPlayingMoviesFromDatabase().listen((nowPlayingMovieFromDB) {
-      nowPlayingMovies = nowPlayingMovieFromDB;
-      if(moviesToShow.isEmpty){
-        setState(() {
-          moviesToShow = nowPlayingMovieFromDB;
-        });
-      }
-    });
-
-
-    /// Coming Soon Movies From Database
-    _comingSoonMoviesSubscription = _model.getComingSoonMoviesFromDatabase().listen((comingSoonMoviesFromDatabase) {
-      comingSoonMovies = comingSoonMoviesFromDatabase;
-    });
-
-    /// Now Playing Movies From Network
-    _model.getNowPlayingMovies().then((nowPlayingMovies){
-      setState(() {
-        this.nowPlayingMovies = nowPlayingMovies;
-        moviesToShow = nowPlayingMovies;
-      });
-    }).catchError((error){
-      showDialog(context: context, builder:
-          (context) => AlertDialog(
-        content: Text(error.toString()),
-      ));
-    });
-
-    /// Coming Soon Movies from Network
-    _model.getComingSoonMovies().then((comingSoonMovies) {
-      this.comingSoonMovies = comingSoonMovies;
-    });
   }
 
   @override
   void dispose() {
-    _nowPlayingMoviesSubscription?.cancel();
-    _comingSoonMoviesSubscription?.cancel();
+
+    _bloc.onDispose();
     super.dispose();
   }
 
@@ -176,24 +141,17 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
           child: SizedBox(height: kMargin30,),
         ),
 
-        /// Now Playing and comming Soon
+        /// Now Playing and coming Soon Tab Bar
          SliverToBoxAdapter(
-          child: NowShowingComingSoonTabBar(
-            selectedText: selectedText,
-            onTapNowShowingOrComingSoon: (text){
-
-              setState(() {
-                /// Set Now Playing or Coming Soon
-                selectedText = text;
-
-                /// Set Movies
-                if( text == kNowShowingLabel){
-                  moviesToShow = nowPlayingMovies;
-                }else{
-                  moviesToShow = comingSoonMovies;
-                }
-              });
-            },
+           /// Reactive phit ag loc
+          child: StreamBuilder<String>(
+            stream: _bloc.selectedTextSubject,
+            builder: (context, snapShot) => NowShowingComingSoonTabBar(
+              selectedText: snapShot.data ?? "",
+              onTapNowShowingOrComingSoon: (text){
+                _bloc.onTapNowShowingOrComingSoon(text);
+              },
+            ),
           ),
         ),
 
@@ -204,14 +162,18 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
         ),
 
         /// Movie List Grid View
-        (moviesToShow.isEmpty) ? const SliverToBoxAdapter(
-          child: Center(
-            child: CircularProgressIndicator(
-              color: kPrimaryColor,
+         StreamBuilder<List<MovieVO>>(
+             stream: _bloc.moviesToShowBehaviorSubject,
+             builder: ( context, snapShot) =>
+             /// Movie List Grid View
+           (snapShot.data?.isEmpty ?? true) ?
+           const SliverToBoxAdapter(
+            child: Center(
+              child: CircularProgressIndicator(
+                color: kPrimaryColor,
+              ),
             ),
-          ),
-        )
-        : SliverPadding(
+          ): SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: kMarginLarge),
             sliver: SliverGrid(
                 delegate: SliverChildBuilderDelegate(
@@ -224,15 +186,15 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
                             tabType = kNowShowingLabel;
                           }
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => MovieDetailsPage(
-                            movieId: moviesToShow[index].id?.toString() ?? "",
+                            movieId: snapShot.data?[index].id?.toString() ?? "",
                           ),
                           settings: RouteSettings(arguments: tabType)));
                         },
                         child: MovieListItemView(
                           isComingSoonSelected: selectedText == kComingSoonLabel,
-                          movieVO: moviesToShow[index],));
+                          movieVO: snapShot.data![index],));
                 },
-                    childCount: moviesToShow.length,
+                    childCount: snapShot.data?.length ?? 0,
                 ),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -240,7 +202,7 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
                     mainAxisSpacing: kMarginMedium3,
                     crossAxisSpacing: kMarginMedium3)),
            ),
-
+         )
       ],
     );
   }
