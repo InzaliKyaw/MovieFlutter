@@ -9,7 +9,7 @@ import 'package:the_movie_app_padc/redux/actions/listen_to_coming_soon_movies_ac
 import 'package:the_movie_app_padc/redux/actions/listen_to_now_playing_movies_action.dart';
 import 'package:the_movie_app_padc/redux/actions/now_playing_movies_received.dart';
 
-// void movieMiddleware(Store<AppState> store, action, NextDispatcher next){
+// void movieMiddleware(Store<AppState> store, action, Nexgit tDispatcher next){
 //   if(action is ListenToNowPlayingMoviesAction){
 //     MovieBookingModel().getNowPlayingMoviesFromDatabase().listen((newMovies) {
 //       store.dispatch(NowPlayingMoviesReceived(newMovies));
