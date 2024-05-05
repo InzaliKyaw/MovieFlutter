@@ -56,7 +56,7 @@ Future<List<MovieVO>> getComingSoonMovies(){
 Future<MovieVO> getMovieDetails(String movieId){
   return mDataAgent.getMovieDetails(movieId).then((movie) async {
     // Sync type before saving
-    MovieVO? movieFromDatabase = _movieDao.getMovieById(movieId);
+    MovieVO? movieFromDatabase = _movieDao.getMovieById(int.parse(movieId));
     if(movieFromDatabase != null){
       movie.type = movieFromDatabase.type ?? "";
     }
@@ -89,7 +89,7 @@ Future<GetOTPResponse> getCheckOTP(String phNumber, String otp){
   }
 
   Stream<MovieVO?> getMovieDetailsFromDatabase(String movieId){
-   return _movieDao.watchMovieBox().map((_) => _movieDao.getMovieById(movieId));
+   return _movieDao.watchMovieBox().map((_) => _movieDao.getMovieById(int.parse(movieId)));
   }
 
   Future<List<CreditVO>> getCreditsByMovie(String movieId){
