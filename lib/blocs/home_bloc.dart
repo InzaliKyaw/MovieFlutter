@@ -1,16 +1,20 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 import 'package:rxdart/rxdart.dart';
 import '../data/vos/movie_vo.dart';
 
-class HomeBloc{
+///Provider package ka
+///Change Notifier and Widget lifecycle connect htr tal
+/// Bloc ka dispose ka widget ko br dispose lote pay
+class HomeBloc extends ChangeNotifier{
 
   /// Model
   final MovieBookingModel _model = MovieBookingModel();
 
   /// Now Showing or Coming Soon
-  BehaviorSubject<String> selectedTextSubject = BehaviorSubject();
+  String selectedText = kNowShowingLabel;
 
   /// Now Playing Movies
   List<MovieVO> nowPlayingMovies = [];
@@ -19,20 +23,18 @@ class HomeBloc{
   List<MovieVO> comingSoonMovies = [];
 
   /// Movies To Show
-  BehaviorSubject<List<MovieVO>> moviesToShowBehaviorSubject = BehaviorSubject();
+  List<MovieVO> moviesToShow = [];
 
   StreamSubscription? _nowPlayingMoviesSubscription;
   StreamSubscription? _comingSoonMoviesSubscription;
 
   HomeBloc(){
-    /// Selected text will initially be Bow Playing
-    selectedTextSubject.add(kNowShowingLabel);
-
     /// Now Playing Movies From Database
     _nowPlayingMoviesSubscription = _model.getNowPlayingMoviesFromDatabase().listen((nowPlayingMovieFromDB) {
       nowPlayingMovies = nowPlayingMovieFromDB;
-      if(moviesToShowBehaviorSubject.valueOrNull?.isEmpty ?? true){
-        moviesToShowBehaviorSubject.add(nowPlayingMovieFromDB);
+      if(moviesToShow.isEmpty){
+        moviesToShow = nowPlayingMovieFromDB;
+        notifyListeners();
       }
     });
 
@@ -51,19 +53,20 @@ class HomeBloc{
 
   void onTapNowShowingOrComingSoon(String text){
 
-    /// Set Now Playing Or Coming Soon
-    selectedTextSubject.add(text);
+
     /// Set Movies
     if (text == kNowShowingLabel){
-      moviesToShowBehaviorSubject.add(nowPlayingMovies);
+      moviesToShow = nowPlayingMovies;
     }else{
-      moviesToShowBehaviorSubject.add(comingSoonMovies);
+      moviesToShow = comingSoonMovies;
     }
+    notifyListeners();
   }
 
   void onDispose(){
     _nowPlayingMoviesSubscription?.cancel();
     _comingSoonMoviesSubscription?.cancel();
+    super.dispose();
   }
 
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:the_movie_app_padc/blocs/home_bloc.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
@@ -11,123 +12,79 @@ import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      /// AppBar
-      appBar: AppBar(
-        centerTitle: false,
+    return ChangeNotifierProvider(
+      create: (context) => HomeBloc(),
+      child: Scaffold(
         backgroundColor: kBackgroundColor,
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // const SizedBox(
-            //   width: kMarginMedium2,
-            // ),
-             Align(
-               alignment: Alignment.topLeft,
-               child: Image.asset(
-                kLocationArrowIcon,
-                width: kLocationIconSize,
-                           ),
-             ),
-            const Text(
-                "Yangon",
-                style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic, fontWeight: FontWeight.w700, fontSize: kTextRegular2x),
+        /// AppBar
+        appBar: AppBar(
+          centerTitle: false,
+          backgroundColor: kBackgroundColor,
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // const SizedBox(
+              //   width: kMarginMedium2,
+              // ),
+               Align(
+                 alignment: Alignment.topLeft,
+                 child: Image.asset(
+                  kLocationArrowIcon,
+                  width: kLocationIconSize,
+                             ),
+               ),
+              const Text(
+                  "Yangon",
+                  style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic, fontWeight: FontWeight.w700, fontSize: kTextRegular2x),
+              ),
+            ],
+          ),
+          actions: [
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const SearchMoviePage()));
+              },
+              child: const Icon(
+                Icons.search,
+                color: Colors.white,
+                size: kMarginLarge,
+              ),
             ),
-          ],
-        ),
-        actions: [
-          GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> const SearchMoviePage()));
-            },
-            child: const Icon(
-              Icons.search,
+            const SizedBox(
+              width: kMarginLarge,
+            ),
+            const Icon(
+              Icons.notifications,
               color: Colors.white,
               size: kMarginLarge,
             ),
-          ),
-          const SizedBox(
-            width: kMarginLarge,
-          ),
-          const Icon(
-            Icons.notifications,
-            color: Colors.white,
-            size: kMarginLarge,
-          ),
-          const SizedBox(
-            width: kMarginMedium3,
-          ),
-          Image.asset(
-            kScanIcon,
-            width: kMarginLarge,
-            height: kMarginLarge,
-          ),
-          const SizedBox(
-            width: kMarginLarge,
-          ),
-        ],
+            const SizedBox(
+              width: kMarginMedium3,
+            ),
+            Image.asset(
+              kScanIcon,
+              width: kMarginLarge,
+              height: kMarginLarge,
+            ),
+            const SizedBox(
+              width: kMarginLarge,
+            ),
+          ],
+        ),
+        body: const HomeScreenBodyView(),
       ),
-      body: const HomeScreenBodyView(),
     );
   }
 }
 
-class HomeScreenBodyView extends StatefulWidget {
+class HomeScreenBodyView extends StatelessWidget {
   const HomeScreenBodyView({super.key});
-
-  @override
-  State<HomeScreenBodyView> createState() => _HomeScreenBodyViewState();
-}
-
-class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
-
-  // final MovieBookingModel _model = MovieBookingModel();
-  final HomeBloc _bloc = HomeBloc();
-
-  /// Now Showing or Coming Soon
-  String selectedText = kNowShowingLabel;
-
-  /// Now Playing Movies
-  List<MovieVO> nowPlayingMovies = [];
-
-  /// Coming Soon Movies
-  List<MovieVO> comingSoonMovies = [];
-
-  /// Movies To Show
-  List<MovieVO> moviesToShow = [];
-
-  StreamSubscription? _nowPlayingMoviesSubscription;
-  StreamSubscription? _comingSoonMoviesSubscription;
-
-
-  late String tabType;
-
-
-  @override
-  void initState(){
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-
-    _bloc.onDispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,14 +99,16 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
         ),
 
         /// Now Playing and coming Soon Tab Bar
-         SliverToBoxAdapter(
-           /// Reactive phit ag loc
-          child: StreamBuilder<String>(
-            stream: _bloc.selectedTextSubject,
-            builder: (context, snapShot) => NowShowingComingSoonTabBar(
-              selectedText: snapShot.data ?? "",
+        SliverToBoxAdapter(
+          /// Reactive phit ag loc
+          child: Selector<HomeBloc, String>(
+            selector: (context, bloc ) => bloc.selectedText,
+            /// second param ka => thu monitor nay tae data
+            builder: (context, selectedText, child) => NowShowingComingSoonTabBar(
+              selectedText: selectedText,
               onTapNowShowingOrComingSoon: (text){
-                _bloc.onTapNowShowingOrComingSoon(text);
+                var bloc = context.read<HomeBloc>();
+                bloc.onTapNowShowingOrComingSoon(text);
               },
             ),
           ),
@@ -162,47 +121,44 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
         ),
 
         /// Movie List Grid View
-         StreamBuilder<List<MovieVO>>(
-             stream: _bloc.moviesToShowBehaviorSubject,
-             builder: ( context, snapShot) =>
-             /// Movie List Grid View
-           (snapShot.data?.isEmpty ?? true) ?
-           const SliverToBoxAdapter(
-            child: Center(
-              child: CircularProgressIndicator(
-                color: kPrimaryColor,
-              ),
-            ),
-          ): SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: kMarginLarge),
-            sliver: SliverGrid(
-                delegate: SliverChildBuilderDelegate(
-                (context, index){
-                  return GestureDetector(
-                        onTap: (){
-                          if (selectedText == kComingSoonLabel ){
-                            tabType = kComingSoonLabel;
-                          }else{
-                            tabType = kNowShowingLabel;
-                          }
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MovieDetailsPage(
-                            movieId: snapShot.data?[index].id?.toString() ?? "",
-                          ),
-                          settings: RouteSettings(arguments: tabType)));
-                        },
-                        child: MovieListItemView(
-                          isComingSoonSelected: selectedText == kComingSoonLabel,
-                          movieVO: snapShot.data![index],));
-                },
-                    childCount: snapShot.data?.length ?? 0,
+        Selector<HomeBloc, List<MovieVO>>(
+          selector: (context, bloc) => bloc.moviesToShow ,
+          builder: ( context, moviesToShow ,model) {
+            var bloc = context.read<HomeBloc>();
+            return (moviesToShow.isEmpty) ?
+            const SliverToBoxAdapter(
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
                 ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisExtent: kMovieListItemHeight,
-                    mainAxisSpacing: kMarginMedium3,
-                    crossAxisSpacing: kMarginMedium3)),
-           ),
-         )
+              ),
+            ): SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: kMarginLarge),
+              sliver: SliverGrid(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index){
+                      return GestureDetector(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => MovieDetailsPage(
+                              movieId: moviesToShow[index].id?.toString() ?? "",
+                            ),
+                               ));
+                          },
+                          child: MovieListItemView(
+                            isComingSoonSelected: bloc.selectedText == kComingSoonLabel,
+                            movieVO: moviesToShow[index],));
+                    },
+                    childCount: moviesToShow.length,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisExtent: kMovieListItemHeight,
+                      mainAxisSpacing: kMarginMedium3,
+                      crossAxisSpacing: kMarginMedium3)
+              ),
+            );
+          },
+        ),
       ],
     );
   }
