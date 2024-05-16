@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/list_items/movie_list_item_view.dart';
 import 'package:the_movie_app_padc/pages/movie_details_page.dart';
 import 'package:the_movie_app_padc/pages/search_movie_page.dart';
+import 'package:the_movie_app_padc/redux/actions/switch_movie_action.dart';
+import 'package:the_movie_app_padc/redux/app_state.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
@@ -178,22 +181,15 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
 
         /// Now Playing and comming Soon
          SliverToBoxAdapter(
-          child: NowShowingComingSoonTabBar(
-            selectedText: selectedText,
-            onTapNowShowingOrComingSoon: (text){
-
-              setState(() {
-                /// Set Now Playing or Coming Soon
-                selectedText = text;
-
-                /// Set Movies
-                if( text == kNowShowingLabel){
-                  moviesToShow = nowPlayingMovies;
-                }else{
-                  moviesToShow = comingSoonMovies;
-                }
-              });
-            },
+          child: StoreConnector<AppState, String>(
+            converter: (store) => store.state.selectedMovieType,
+            builder:(context, movieType) => NowShowingComingSoonTabBar(
+              selectedText: movieType,
+              onTapNowShowingOrComingSoon: (text){
+                  var store = StoreProvider.of<AppState>(context, listen:false);
+                  store.dispatch(SwitchMovieAction(movieType: text));
+              },
+            ),
           ),
         ),
 
@@ -204,13 +200,17 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
         ),
 
         /// Movie List Grid View
-        (moviesToShow.isEmpty) ? const SliverToBoxAdapter(
-          child: Center(
-            child: CircularProgressIndicator(
-              color: kPrimaryColor,
+       StoreConnector<AppState, List<MovieVO>>(
+          converter:(store) => store.state.moviesToShow,
+          builder:(context, moviesToShow){
+          var store = StoreProvider.of<AppState>(context, listen:false);
+          return(moviesToShow.isEmpty) ?  const SliverToBoxAdapter(
+            child: Center(
+              child: CircularProgressIndicator(
+                color: kPrimaryColor,
+              ),
             ),
-          ),
-        )
+          )
         : SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: kMarginLarge),
             sliver: SliverGrid(
@@ -229,7 +229,7 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
                           settings: RouteSettings(arguments: tabType)));
                         },
                         child: MovieListItemView(
-                          isComingSoonSelected: selectedText == kComingSoonLabel,
+                          isComingSoonSelected: store.state.selectedMovieType == kComingSoonLabel,
                           movieVO: moviesToShow[index],));
                 },
                     childCount: moviesToShow.length,
@@ -238,9 +238,12 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
                     crossAxisCount: 2,
                     mainAxisExtent: kMovieListItemHeight,
                     mainAxisSpacing: kMarginMedium3,
-                    crossAxisSpacing: kMarginMedium3)),
-           ),
-
+                    crossAxisSpacing: kMarginMedium3
+                ),
+            ),
+           );
+           },
+       )
       ],
     );
   }

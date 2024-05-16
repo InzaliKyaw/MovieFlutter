@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:redux/redux.dart';
 import 'package:the_movie_app_padc/data/vos/collection_vo.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/data/vos/production_company_vo.dart';
 import 'package:the_movie_app_padc/data/vos/production_country_vo.dart';
 import 'package:the_movie_app_padc/data/vos/spoken_language_vo.dart';
 import 'package:the_movie_app_padc/network/response/get_otp_response.dart';
-import 'package:the_movie_app_padc/pages/main_page.dart';
 import 'package:the_movie_app_padc/pages/splash_page.dart';
-import 'package:the_movie_app_padc/persistance/hive_constants.dart';
+import 'package:the_movie_app_padc/redux/actions/fetch_coming_soon_movies_from_network.dart';
+import 'package:the_movie_app_padc/redux/actions/fetch_now_playing_movies_from_network.dart';
+import 'package:the_movie_app_padc/redux/actions/listen_to_coming_soon_movies_action.dart';
+import 'package:the_movie_app_padc/redux/actions/listen_to_now_playing_movies_action.dart';
+import 'package:the_movie_app_padc/redux/app_state.dart';
+import 'package:the_movie_app_padc/redux/middleware/movieMiddleware.dart';
+import 'package:the_movie_app_padc/redux/reducer/reducer.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
-
 import 'data/vos/genre_vo.dart';
+
 
 void main() async{
 
@@ -34,21 +41,40 @@ void main() async{
   }catch(e) {
     debugPrint("HIVE ERROR ====> " +e.toString());
   }
-  runApp(const MovieBookingApp());
+
+  var store = Store<AppState> (
+    reducer,
+    initialState: AppState.initial(),
+    middleware: [movieMiddleware],
+  );
+
+
+  store.dispatch(FetchNowPlayingMoviesFromNetwork());
+  store.dispatch(FetchComingSoonMoviesFromNetworkAction());
+  store.dispatch(ListenToNowPlayingMoviesAction());
+  store.dispatch(ListenToComingSoonMoviesAction());
+
+  runApp(MovieBookingApp(store: store,));
 }
 
 
 
 class MovieBookingApp extends StatelessWidget {
-  const MovieBookingApp({Key? key}) : super(key: key);
+
+  final Store<AppState> store;
+
+  const MovieBookingApp({super.key, required this.store}) ;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          scaffoldBackgroundColor: kBackgroundColor
+    return StoreProvider(
+      store: store,
+      child: MaterialApp(
+        theme: ThemeData(
+            scaffoldBackgroundColor: kBackgroundColor
+        ),
+        home: const SplashPage(),
       ),
-      home: const SplashPage(),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 

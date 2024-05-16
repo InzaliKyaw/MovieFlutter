@@ -47,6 +47,8 @@ dependencies:
   floor_generator: ^1.4.2
   hive_flutter: ^1.1.0
   fluttertoast: ^8.0.9
+  redux: ^5.0.0
+  flutter_redux: ^0.10.0
 
 
 
