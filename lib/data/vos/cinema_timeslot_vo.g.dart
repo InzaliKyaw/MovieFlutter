@@ -6,8 +6,8 @@ part of 'cinema_timeslot_vo.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CinemaTimeSlot _$CinemaTimeSlotFromJson(Map<String, dynamic> json) =>
-    CinemaTimeSlot(
+CinemaTimeSlotVO _$CinemaTimeSlotVOFromJson(Map<String, dynamic> json) =>
+    CinemaTimeSlotVO(
       json['cinema_id'] as int?,
       json['cinema'] as String?,
       (json['timeslots'] as List<dynamic>?)
@@ -15,7 +15,7 @@ CinemaTimeSlot _$CinemaTimeSlotFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$CinemaTimeSlotToJson(CinemaTimeSlot instance) =>
+Map<String, dynamic> _$CinemaTimeSlotVOToJson(CinemaTimeSlotVO instance) =>
     <String, dynamic>{
       'cinema_id': instance.cinemaId,
       'cinema': instance.cinema,

@@ -87,7 +87,7 @@ Future<GetOTPResponse> getCheckOTP(String phNumber, String otp){
     return _movieDao.getMovieByType(kMovieTypeComingSoon);
   }
 
-  MovieVO? getMovieDetailsFromDatabase(int movieId){
+  MovieVO? getMovieDetailsFromDatabase(String movieId){
    return _movieDao.getMovieById(movieId);
   }
 

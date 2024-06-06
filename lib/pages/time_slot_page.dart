@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -29,22 +28,27 @@ class TimeSlotPage extends StatefulWidget {
 class _TimeSlotPageState extends State<TimeSlotPage> {
   bool isCinemaVisible = false;
   final MovieBookingModel _model = MovieBookingModel();
-  List<CinemaTimeSlot> cinemaList = [];
-   List<String> dateList = [];
+  List<CinemaTimeSlotVO> cinemaList = [];
+  final now = DateTime.now();
+  late List<CustomTimeslotVO> dateList = [];
   int selectedIndex = 0;
   Color? primaryColor;
+  late String selectedDate;
 
-  void cinemaTimeSlotVisibility(int currentIndex) {
-      if(selectedIndex == currentIndex){
-        if (isCinemaVisible == false) {
-          isCinemaVisible =  true;
-        } else {
-          isCinemaVisible = false;
-        }
+  void cinemaTimeSlotVisibility(bool isSelected) {
+      if(isSelected){
+        isCinemaVisible = true;
       }else{
         isCinemaVisible = false;
       }
-
+      //   if (isCinemaVisible == false) {
+      //     isCinemaVisible =  true;
+      //   } else {
+      //     isCinemaVisible = false;
+      //   }
+      // }else{
+      //   isCinemaVisible = false;
+      // }
   }
 
   Future<void> getCinemaFromNetwork(String chosenDate) async {
@@ -74,9 +78,16 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
 
   @override
   void initState() {
-    getCinemaFromNetwork("2024-09-22");
+    DateTime currentDateTime = DateTime(now.year, now.month, now.day);
+    selectedDate = DateFormat('yyyy-MM-dd').format(currentDateTime);
     dateList = generateTwoWeeks();
-    super.initState();
+     setState(() {
+       dateList;
+     });
+     if(selectedDate.isNotEmpty){
+       getCinemaFromNetwork(selectedDate);
+     }
+     super.initState();
   }
 
   Future<int> getIdFromSharedPreference() async {
@@ -89,15 +100,20 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
   }
 
 
-  List<String> generateTwoWeeks(){
-    final now = DateTime.now();
+  List<CustomTimeslotVO> generateTwoWeeks(){
     var twoweeks = 13;
-    List<String> twoWeeks = [];
+    // List<String> twoWeeks = [];
+    List<CustomTimeslotVO> twoWeeks = [];
     for(int i=0; i<= twoweeks; i++){
       DateTime currentDateTime = DateTime(now.year, now.month, now.day + i);
-      String formattedDate = DateFormat('EEE-MMM-d').format(currentDateTime);
-      // CustomTimeslotVO customTimeslotVO = CustomTimeslotVO(formattedDate, kWhite);
-      twoWeeks.add(formattedDate);
+       if( i == 0){
+         CustomTimeslotVO customTimeslotVO = CustomTimeslotVO(currentDateTime, true);
+         twoWeeks.add(customTimeslotVO);
+       }else{
+         CustomTimeslotVO customTimeslotVO = CustomTimeslotVO(currentDateTime, false);
+         twoWeeks.add(customTimeslotVO);
+       }
+      // twoWeeks.add(formattedDate);
     }
     return twoWeeks;
   }
@@ -169,19 +185,24 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                   scrollDirection: Axis.horizontal,
                   itemCount: dateList.length,
                   itemBuilder: (context, index) {
-                    var dayList = dateList[index].split("-");
+                    DateTime dateTimeF = dateList[index].date ?? now;
+                    String formattedDate = DateFormat('EEE-MMM-d').format(dateTimeF);
+                     var dayList =  formattedDate.split("-");
+                    bool isSelected = dateList[index].isSelected ?? false;
                     String day;
                     String month;
                     String date;
                     if(dayList.isNotEmpty){
                       if(index == 0){
                         day = "Today";
-                        primaryColor = kPrimaryColor;
                       }else if(index == 1){
                         day = "Tomorrow";
-                        primaryColor = kWhite;
                       }else{
                         day = dayList[0];
+                      }
+                      if(isSelected){
+                        primaryColor = kPrimaryColor;
+                      }else{
                         primaryColor = kWhite;
                       }
                        month = dayList[1];
@@ -195,8 +216,18 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
                         onTap: (){
+                          var curIndex = index;
+                          String chosenDate = DateFormat('yyyy-MM-dd').format(dateTimeF);
                           setState(() {
+                            dateList[index].isSelected = true;
+                            for(int i = 0; i< dateList.length; i++){
+                              if(i!= curIndex){
+                                dateList[i].isSelected = false;
+                              }
+                            }
+                            dateList;
                           });
+                          getCinemaFromNetwork(chosenDate);
                         },
                         child: CalendarWidget(primaryColor: primaryColor, day: day, month: month, date: date),
                       ),
@@ -268,7 +299,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
           /// Cinema List
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
-              CinemaTimeSlot cinema = cinemaList[index];
+              CinemaTimeSlotVO cinema = cinemaList[index];
               String? cinemaName =
                   cinema.cinema != null ? cinemaList[index].cinema : "";
               List<TimeslotVO>? timeslotList = cinemaList[index].timeslot;
@@ -276,7 +307,14 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                 onTap: () {
                   setState(() {
                     selectedIndex = index;
-                    cinemaTimeSlotVisibility(index);
+
+                    cinemaList[index].isSelected = true;
+                    for(int i = 0; i< dateList.length; i++){
+                      if(i!= selectedIndex){
+                        cinemaList[i].isSelected = false;
+                      }
+                    }
+                    cinemaTimeSlotVisibility(cinemaList[index].isSelected ?? false);
                   });
                 },
                 child: Column(children: [

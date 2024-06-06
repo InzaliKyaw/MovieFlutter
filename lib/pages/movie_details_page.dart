@@ -53,7 +53,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     });
      */
 
-    MovieVO? movieDetailsFromDatabase = _model.getMovieDetailsFromDatabase(int.parse(widget.movieId ?? "0"));
+    MovieVO? movieDetailsFromDatabase = _model.getMovieDetailsFromDatabase(widget.movieId ?? "0");
     setState(() {
       movieDetails = movieDetailsFromDatabase;
     });
@@ -215,7 +215,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     child: CastView(
                       creditList: creditList ?? []
                     ),
-                  )
+                  ),
+                  const SizedBox(height: kMargin30,),
+
                 ],
               ),
             ),

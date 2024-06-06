@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
-import 'package:the_movie_app_padc/pages/home_page.dart';
 import 'package:the_movie_app_padc/pages/location_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
 import 'package:the_movie_app_padc/utils/spaces.dart';
-import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 
 class OTPPage extends StatefulWidget {
@@ -106,43 +104,43 @@ class _OTPPageState extends State<OTPPage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: PinCodeFields(
-                length: 6,
-                fieldBorderStyle: FieldBorderStyle.square,
-                responsive: false,
-                fieldHeight: 38.0,
-                fieldWidth: 38.0,
-                borderWidth: 1.0,
-                obscureText: true,
-                activeBorderColor: kPrimaryColor,
-                activeBackgroundColor:
-                const Color.fromRGBO(240, 240, 240, 1.0),
-                borderRadius: BorderRadius.circular(5.0),
-                keyboardType: TextInputType.number,
-                autoHideKeyboard: false,
-                fieldBackgroundColor:
-                const Color.fromRGBO(240, 240, 240, 1.0),
-                borderColor: const Color.fromRGBO(240, 240, 240, 1.0),
-                textStyle: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w600,
-                ),
-                onChange: (output) {
-                  if (output.length == 6 &&
-                      _pinController.text.isNotEmpty) {
-                    setState(() {
-                    });
-                  } else {
-                    setState(() {
-        
-                    });
-                  }
-                },
-                onComplete: (output) {
-                  // Your logic with pin code
-                  print(output);
-                },
-              ),
+              // child: PinCodeFields(
+              //   length: 6,
+              //   fieldBorderStyle: FieldBorderStyle.square,
+              //   responsive: false,
+              //   fieldHeight: 38.0,
+              //   fieldWidth: 38.0,
+              //   borderWidth: 1.0,
+              //   obscureText: true,
+              //   activeBorderColor: kPrimaryColor,
+              //   activeBackgroundColor:
+              //   const Color.fromRGBO(240, 240, 240, 1.0),
+              //   borderRadius: BorderRadius.circular(5.0),
+              //   keyboardType: TextInputType.number,
+              //   autoHideKeyboard: false,
+              //   fieldBackgroundColor:
+              //   const Color.fromRGBO(240, 240, 240, 1.0),
+              //   borderColor: const Color.fromRGBO(240, 240, 240, 1.0),
+              //   textStyle: const TextStyle(
+              //     fontSize: 18.0,
+              //     fontWeight: FontWeight.w600,
+              //   ),
+              //   onChange: (output) {
+              //     if (output.length == 6 &&
+              //         _pinController.text.isNotEmpty) {
+              //       setState(() {
+              //       });
+              //     } else {
+              //       setState(() {
+              //
+              //       });
+              //     }
+              //   },
+              //   onComplete: (output) {
+              //     // Your logic with pin code
+              //     print(output);
+              //   },
+              // ),
             ),
             verticalSpacing(48),
             RichText(text: const TextSpan(

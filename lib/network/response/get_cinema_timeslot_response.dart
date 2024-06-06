@@ -13,7 +13,7 @@ class GetCinemaDayTimeSlotResponse{
   String? message;
 
   @JsonKey(name:"data")
-  List<CinemaTimeSlot>? data;
+  List<CinemaTimeSlotVO>? data;
 
   GetCinemaDayTimeSlotResponse({this.code,this.message, this.data});
 

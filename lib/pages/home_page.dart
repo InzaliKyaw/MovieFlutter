@@ -19,7 +19,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +106,6 @@ class _HomeScreenBodyViewState extends State<HomeScreenBodyView> {
 
   /// Movies To Show
   List<MovieVO> moviesToShow = [];
-
 
 
   late String tabType;
