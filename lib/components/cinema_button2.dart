@@ -1,8 +1,5 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:the_movie_app_padc/utils/colors.dart';
-import 'package:the_movie_app_padc/utils/images.dart';
 
 class CinemaButton2 extends StatelessWidget {
   final String label;

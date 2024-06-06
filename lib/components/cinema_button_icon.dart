@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:the_movie_app_padc/utils/images.dart';
 
 class CinemaButtonIcon extends StatelessWidget {
   final void Function()? onPressed;

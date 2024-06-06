@@ -4,7 +4,7 @@ import 'timeslots_vo.dart';
 part 'cinema_timeslot_vo.g.dart';
 
 @JsonSerializable()
-class CinemaTimeSlot{
+class CinemaTimeSlotVO{
   @JsonKey(name: "cinema_id")
   @HiveField(0)
   int? cinemaId;
@@ -17,13 +17,19 @@ class CinemaTimeSlot{
   @HiveField(2)
   List<TimeslotVO>? timeslot;
 
-  CinemaTimeSlot(
+  @HiveField(3)
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool? isSelected;
+
+  CinemaTimeSlotVO(
       this.cinemaId,
       this.cinema,
-      this.timeslot
+      this.timeslot,{
+        this.isSelected = false,
+      }
       );
 
-  factory CinemaTimeSlot.fromJson(Map<String, dynamic> json) => _$CinemaTimeSlotFromJson(json);
+  factory CinemaTimeSlotVO.fromJson(Map<String, dynamic> json) => _$CinemaTimeSlotVOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CinemaTimeSlotToJson(this);
+  Map<String, dynamic> toJson() => _$CinemaTimeSlotVOToJson(this);
 }
