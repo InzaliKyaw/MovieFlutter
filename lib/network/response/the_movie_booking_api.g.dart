@@ -165,6 +165,37 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
   }
 
   @override
+  Future<MovieListResponse?> getSimilarMovies(
+    int movieId,
+    String apiKey,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'api_key': apiKey};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>?>(_setStreamType<MovieListResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/3/movie/${movieId}/similar',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value =
+        _result.data == null ? null : MovieListResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<GetOTPResponse> getCheckOTP(
     String phoneNo,
     String otp,
@@ -191,7 +222,7 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
-                  kBaseUrlMovieCinema,
+              kBaseUrlMovieCinema,
             ))));
     final value = GetOTPResponse.fromJson(_result.data!);
     return value;
@@ -275,7 +306,7 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
-              kBaseUrlMovieCinema,
+              baseUrl,
             ))));
     final value = GetCinemaDayTimeSlotResponse.fromJson(_result.data!);
     return value;
@@ -308,7 +339,7 @@ class _TheMovieBookingApi implements TheMovieBookingApi {
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
-              baseUrl,
+                  kBaseUrlMovieCinema,
             ))));
     final value = MovieListResponse.fromJson(_result.data!);
     return value;

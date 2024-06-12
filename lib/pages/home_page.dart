@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:the_movie_app_padc/blocs/home_bloc.dart';
+import 'package:the_movie_app_padc/components/best_popular_movies_and_series_section_view.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/list_items/movie_list_item_view.dart';
 import 'package:the_movie_app_padc/pages/movie_details_page.dart';
@@ -97,7 +97,17 @@ class HomeScreenBodyView extends StatelessWidget {
         const SliverToBoxAdapter(
           child: SizedBox(height: kMargin30,),
         ),
-
+         /// Best Popular Movie
+          SliverToBoxAdapter(
+          child: Selector<HomeBloc, List<MovieVO>?>(
+              selector: (context, bloc) => bloc.nowPlayingMovies,
+              builder: (context, nowPlayingMovieList, child) =>
+                  BestPopularMoviesAndSerialsSectionView(title: kBESTPOPULAR, mNowPlayingMovieList: nowPlayingMovieList,
+                  onListEndReached: (){
+                    var bloc = Provider.of<HomeBloc>(context, listen: false);
+                    bloc.onNowPlayingMovieListEndReached();
+                  },)),
+        ),
         /// Now Playing and coming Soon Tab Bar
         SliverToBoxAdapter(
           /// Reactive phit ag loc
@@ -163,6 +173,10 @@ class HomeScreenBodyView extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
 class BannerSectionView extends StatelessWidget {
    BannerSectionView({super.key});

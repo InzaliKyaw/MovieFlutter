@@ -50,6 +50,7 @@ const kOfferIcon = "assets/images/bxs_offer.png";
 const kPaymentIcon = "assets/images/pay.png";
 const kBookingSuccessImg = "assets/images/booking_success.png";
 const kQrImg = "assets/images/qr_img.png";
+const kMoviePlaceholder = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fgbu-taganskij.ru%2Fnewsfiresafety%2Fluchshaya-tactica-profilactica%2F%3Fw%3Dis-it-permissible-to-watch-a-film-that-has-kk-OZdKGJTD&psig=AOvVaw3QQUZslDdHQRfU6IcZU1KK&ust=1717906734414000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKCkxL6Ty4YDFQAAAAAdAAAAABAJ";
 
 /// Profile page
 const kProfileBg = "assets/images/profile_bg.png";

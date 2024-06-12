@@ -43,6 +43,12 @@ abstract class TheMovieBookingApi{
       @Query(kParamPage) String page
       );
 
+  @GET("/3/movie/{movie_id}/similar")
+  Future<MovieListResponse?> getSimilarMovies(
+      @Path("movie_id") int movieId,
+      @Query(kParamApiKey) String apiKey
+      );
+
 
   @POST(kEndPointCheckOTP)
   Future<GetOTPResponse> getCheckOTP(

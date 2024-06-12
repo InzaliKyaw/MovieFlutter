@@ -27,8 +27,8 @@ final OTPDao _otpDao = OTPDao();
 /// PolyMorphism Can use different Impl
 TheMovieBookingDataAgent mDataAgent = RetrofitDataAgentImpl();
 
-Future<List<MovieVO>> getNowPlayingMovies() {
-  return mDataAgent.getNowPlayingMovie(1.toString()).then((nowPlayingMovieList) async {
+Future<List<MovieVO>> getNowPlayingMovies(int page) {
+  return mDataAgent.getNowPlayingMovie(page.toString()).then((nowPlayingMovieList) async {
     // var database = await MovieBookingDatabase.getMovieBookingDatabase;
     for(var movie in nowPlayingMovieList){
       movie.type = kMovieTypeNowPlaying;
@@ -51,6 +51,11 @@ Future<List<MovieVO>> getComingSoonMovies(){
     _movieDao.saveMovies(comingSoonMovieList);
     return comingSoonMovieList;
   });
+}
+
+/// Similar Movies
+Future<List<MovieVO>> getSimilarMovies(int movieId){
+  return mDataAgent.getSimilarMovies(movieId);
 }
 
 Future<MovieVO> getMovieDetails(String movieId){

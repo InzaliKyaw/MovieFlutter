@@ -9,6 +9,8 @@ abstract class TheMovieBookingDataAgent{
 
   Future<List<MovieVO>> getComingSoonMovies(String page);
 
+  Future<List<MovieVO>> getSimilarMovies(int movieId);
+
   Future<MovieVO> getMovieDetails(String movieId);
 
   Future<List<CreditVO>> getCreditsByMovie(String movieId);

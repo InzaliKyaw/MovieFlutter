@@ -11,10 +11,13 @@ const String kSentOTPCode = "We've sent OTP Code";
 const String kOTPDescription = "Please enter 6-digit OTP code\n that sent to your phone number.";
 const String kEnterOTP = "Enter OTP Code";
 
+/// Home Page
+const String kBESTPOPULAR = "Best Popular Movies and Series";
+const String kRELATEDMOVIES = "Related Movies";
+
 /// Location Page
 const String kCities = "Cities";
 const String kYangon = "Yangon";
-
 const String kNowShowingLabel = "Now Showing";
 const String kComingSoonLabel = "Coming Soon";
 const String kBookingLabel = "Booking";

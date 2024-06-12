@@ -13,6 +13,7 @@ import 'package:the_movie_app_padc/pages/cast_item_view.dart';
 import 'package:the_movie_app_padc/utils/spaces.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 
+import '../components/best_popular_movies_and_series_section_view.dart';
 import '../data/vos/movie_vo.dart';
 
 class MovieDetailsPage extends StatelessWidget {
@@ -164,7 +165,22 @@ class MovieDetailsPage extends StatelessWidget {
                               creditList: creditList ?? []
                           ),
                         ),
-                      )
+                      ),
+
+                      /// Spacer
+                      const SizedBox(height: kMargin30,),
+                      /// Best Popular Movie
+                      Selector<MovieDetailsBloc, List<MovieVO>?>(
+                          selector: (context, bloc) => bloc.mRelatedMovies,
+                          builder: (context, mRelatedMovies, child) =>
+                              BestPopularMoviesAndSerialsSectionView(
+                                title: kRELATEDMOVIES,
+                                mNowPlayingMovieList: mRelatedMovies,
+                                onListEndReached:(){
+                                  var bloc = Provider.of<MovieDetailsBloc>(context, listen: false);
+                                  bloc.relatedMovieListEndReached(bloc.movieDetails?.id ?? 0);
+                                } ,)),
+
                     ],
                   ),
                 ),

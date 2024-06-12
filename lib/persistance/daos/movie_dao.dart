@@ -36,5 +36,4 @@ class MovieDao{
   Box<MovieVO> getMovieBox(){
     return Hive.box<MovieVO>("kBoxNameMovieVO");
   }
-
 }

@@ -9,11 +9,9 @@ import 'package:the_movie_app_padc/data/vos/spoken_language_vo.dart';
 import 'package:the_movie_app_padc/network/api_constants.dart';
 import 'package:intl/intl.dart';
 import 'package:the_movie_app_padc/persistance/hive_constants.dart';
-
 part 'movie_vo.g.dart';
 
 @JsonSerializable()
-// @Entity(tableName: "movies")
 @HiveType(typeId: kHiveTypeIdMovieVO, adapterName: kAdapterNameMovieVO)
 class MovieVO extends HiveObject{
   @JsonKey(name: "adult")

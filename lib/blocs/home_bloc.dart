@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
-import 'package:rxdart/rxdart.dart';
 import '../data/vos/movie_vo.dart';
 
 ///Provider package ka
@@ -28,6 +27,9 @@ class HomeBloc extends ChangeNotifier{
   StreamSubscription? _nowPlayingMoviesSubscription;
   StreamSubscription? _comingSoonMoviesSubscription;
 
+  /// Page
+  int pageForNowPlayingMovies = 1;
+
   HomeBloc(){
     /// Now Playing Movies From Database
     _nowPlayingMoviesSubscription = _model.getNowPlayingMoviesFromDatabase().listen((nowPlayingMovieFromDB) {
@@ -45,21 +47,25 @@ class HomeBloc extends ChangeNotifier{
     });
 
     /// Now Playing Movies From Network
-    _model.getNowPlayingMovies();
+    _model.getNowPlayingMovies(pageForNowPlayingMovies);
 
     /// Coming Soon Movies from Network
     _model.getComingSoonMovies();
   }
 
   void onTapNowShowingOrComingSoon(String text){
-
-
     /// Set Movies
     if (text == kNowShowingLabel){
       moviesToShow = nowPlayingMovies;
     }else{
       moviesToShow = comingSoonMovies;
     }
+    notifyListeners();
+  }
+
+  void onNowPlayingMovieListEndReached(){
+    this.pageForNowPlayingMovies += 1;
+    _model.getNowPlayingMovies(pageForNowPlayingMovies);
     notifyListeners();
   }
 

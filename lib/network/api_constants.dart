@@ -16,6 +16,8 @@ const String kEndPointGetOTP = "/api/v2/get-otp";
 const String kEndPointGetCities = "/api/v2/cities";
 const String kEndPointSearchCinema = "/3/search/movie";
 
+/// Similar End Points
+
 
 /// Parameters
 const String kParamApiKey = "api_key";

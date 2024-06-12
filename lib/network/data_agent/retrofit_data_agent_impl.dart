@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -107,6 +108,7 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
   }
 
 
+
   CustomException _createException(dynamic error) {
     ErrorVO errorVO;
     if (error is DioException) {
@@ -148,6 +150,17 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
     return mApi.getSearchMovie( kApiKey,query)
         .asStream()
         .map((response) => response.results ?? [])
+        .first
+        .catchError((error){
+      throw _createException(error);
+    });
+  }
+
+  @override
+  Future<List<MovieVO>> getSimilarMovies(int movieId) {
+    return mApi.getSimilarMovies(movieId, kApiKey)
+        .asStream()
+        .map((response) => response?.results ?? [])
         .first
         .catchError((error){
       throw _createException(error);
