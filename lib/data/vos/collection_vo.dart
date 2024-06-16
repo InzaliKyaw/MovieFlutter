@@ -26,7 +26,13 @@ String? backDropPath;
 
 CollectionVO(this.id, this.name, this.posterPath, this.backDropPath);
 
-factory CollectionVO.fromJson(Map<String, dynamic> json) => _$CollectionVOFromJson(json);
+CollectionVO.namedParameters({
+  this.id,
+  this.name,
+  this.posterPath,
+  this.backDropPath});
+
+  factory CollectionVO.fromJson(Map<String, dynamic> json) => _$CollectionVOFromJson(json);
 
 Map<String, dynamic> toJson() => _$CollectionVOToJson(this);
 }

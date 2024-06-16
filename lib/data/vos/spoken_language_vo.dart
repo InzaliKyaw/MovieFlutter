@@ -21,6 +21,8 @@ class SpokenLanguageVO extends HiveObject{
 
   SpokenLanguageVO(this.englishName, this.iso6391, this.name);
 
+  SpokenLanguageVO.nameParameters({this.englishName, this.iso6391, this.name});
+
   factory SpokenLanguageVO.fromJson(Map<String, dynamic> json) => _$SpokenLanguageVOFromJson(json);
 
   Map<String, dynamic> toJson() => _$SpokenLanguageVOToJson(this);

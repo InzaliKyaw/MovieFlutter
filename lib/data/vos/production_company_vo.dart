@@ -25,7 +25,11 @@ class ProductionCompanyVO extends HiveObject{
 
    ProductionCompanyVO(this.id, this.logoPath, this.name, this.originCountry);
 
-   factory ProductionCompanyVO.fromJson(Map<String, dynamic> json) => _$ProductionCompanyVOFromJson(json);
+
+   ProductionCompanyVO.namedParameters({
+      this.id, this.logoPath, this.name, this.originCountry});
+
+  factory ProductionCompanyVO.fromJson(Map<String, dynamic> json) => _$ProductionCompanyVOFromJson(json);
 
    Map<String, dynamic> toJson() => _$ProductionCompanyVOToJson(this);
 }

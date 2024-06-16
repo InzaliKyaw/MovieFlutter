@@ -174,10 +174,6 @@ class HomeScreenBodyView extends StatelessWidget {
   }
 }
 
-
-
-
-
 class BannerSectionView extends StatelessWidget {
    BannerSectionView({super.key});
 

@@ -14,7 +14,11 @@ class GenreVO extends HiveObject{
   @JsonKey(name: "name")
   @HiveField(1)
   String? name;
+
   GenreVO(this.id,this.name);
+
+
+  GenreVO.namedParameter({this.id, this.name});
 
   factory GenreVO.fromJson(Map<String, dynamic> json) => _$GenreVOFromJson(json);
 

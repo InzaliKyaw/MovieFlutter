@@ -182,6 +182,37 @@ class MovieVO extends HiveObject{
       }
       );
 
+
+  MovieVO.nameParameters({
+      this.adult,
+      this.backDropPath,
+      this.genreIds,
+      this.id,
+      this.originalLanguage,
+      this.originalTitle,
+      this.overview,
+      this.popularity,
+      this.posterPath,
+      this.releaseDate,
+      this.title,
+      this.video,
+      this.voteAverage,
+      this.voteCount,
+      this.belongsToCollection,
+      this.budget,
+      this.genres,
+      this.homePage,
+      this.imdbId,
+      this.productionCompanies,
+      this.productionCountries,
+      this.revenue,
+      this.runTime,
+      this.spokenLanguages,
+      this.status,
+      this.tagLine,
+      this.type,
+  });
+
   factory MovieVO.fromJson(Map<String, dynamic> json) => _$MovieVOFromJson(json);
 
   Map<String, dynamic> toJson() => _$MovieVOToJson(this);
