@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
+import 'package:the_movie_app_padc/data/models/movie_booking_model_impl.dart';
 import 'package:the_movie_app_padc/pages/main_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
@@ -17,7 +18,7 @@ class LocationPage extends StatefulWidget {
 class _LocationPageState extends State<LocationPage> {
 
   /// Model
-  final MovieBookingModel _model = MovieBookingModel();
+  final MovieBookingModelImpl _model = MovieBookingModelImpl();
   List<String> cities = [];
 
   @override

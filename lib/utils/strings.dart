@@ -138,3 +138,4 @@ const String k3500 = "3500Ks";
 const String k29500 = "29500Ks";
 const String k8am = "8am";
 const String k12pm = "12pm";
+const String kHomeKeyScroll = "home-scroll-view";

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
+import '../data/models/movie_booking_model_impl.dart';
 import '../data/vos/movie_vo.dart';
 
 ///Provider package ka
@@ -10,7 +11,7 @@ import '../data/vos/movie_vo.dart';
 class HomeBloc extends ChangeNotifier{
 
   /// Model
-  final MovieBookingModel _model = MovieBookingModel();
+  MovieBookingModel _model = MovieBookingModelImpl();
 
   /// Now Showing or Coming Soon
   String selectedText = kNowShowingLabel;
@@ -30,7 +31,10 @@ class HomeBloc extends ChangeNotifier{
   /// Page
   int pageForNowPlayingMovies = 1;
 
-  HomeBloc(){
+  HomeBloc({MovieBookingModel? model}){
+    if(model != null){
+      _model = model;
+    }
     /// Now Playing Movies From Database
     _nowPlayingMoviesSubscription = _model.getNowPlayingMoviesFromDatabase().listen((nowPlayingMovieFromDB) {
       nowPlayingMovies = nowPlayingMovieFromDB;

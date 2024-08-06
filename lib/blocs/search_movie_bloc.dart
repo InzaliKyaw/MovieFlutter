@@ -3,10 +3,12 @@ import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../data/models/movie_booking_model_impl.dart';
+
 class SearchMovieBloc{
 
   /// Movie Model
-  final MovieBookingModel _model = MovieBookingModel();
+  final MovieBookingModelImpl _model = MovieBookingModelImpl();
 
   /// Stream Controller
   /// widget to Bloc

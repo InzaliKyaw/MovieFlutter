@@ -11,6 +11,7 @@ import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
+import 'package:the_movie_app_padc/utils/widget_keys.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -89,15 +90,19 @@ class HomeScreenBodyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      key: const Key(kHomeKeyScroll),
       slivers: [
         /// Banner
         SliverToBoxAdapter(
-          child: BannerSectionView(),
+          child: BannerSectionView(
+            key: const Key(kBannerKey),
+          ),
         ),
         const SliverToBoxAdapter(
           child: SizedBox(height: kMargin30,),
         ),
          /// Best Popular Movie
+        /*
           SliverToBoxAdapter(
           child: Selector<HomeBloc, List<MovieVO>?>(
               selector: (context, bloc) => bloc.nowPlayingMovies,
@@ -108,6 +113,7 @@ class HomeScreenBodyView extends StatelessWidget {
                     bloc.onNowPlayingMovieListEndReached();
                   },)),
         ),
+         */
         /// Now Playing and coming Soon Tab Bar
         SliverToBoxAdapter(
           /// Reactive phit ag loc
@@ -115,6 +121,7 @@ class HomeScreenBodyView extends StatelessWidget {
             selector: (context, bloc ) => bloc.selectedText,
             /// second param ka => thu monitor nay tae data
             builder: (context, selectedText, child) => NowShowingComingSoonTabBar(
+              key: const Key(kNowShowingOrComingSoonTabBarKey),
               selectedText: selectedText,
               onTapNowShowingOrComingSoon: (text){
                 var bloc = context.read<HomeBloc>();
@@ -163,8 +170,8 @@ class HomeScreenBodyView extends StatelessWidget {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisExtent: kMovieListItemHeight,
-                      mainAxisSpacing: kMarginMedium3,
-                      crossAxisSpacing: kMarginMedium3)
+                      mainAxisSpacing: kMarginMedium2,
+                      crossAxisSpacing: kMarginMedium2)
               ),
             );
           },

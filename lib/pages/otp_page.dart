@@ -11,6 +11,8 @@ import 'package:the_movie_app_padc/utils/spaces.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 
+import '../data/models/movie_booking_model_impl.dart';
+
 class OTPPage extends StatefulWidget {
   final String? phNumber;
   final String? otp;
@@ -25,7 +27,7 @@ class OTPPage extends StatefulWidget {
 class _OTPPageState extends State<OTPPage> {
 
   /// Model
-  final MovieBookingModel _model = MovieBookingModel();
+  final MovieBookingModelImpl _model = MovieBookingModelImpl();
 
   /// OTP Model
   final _pinController = TextEditingController();

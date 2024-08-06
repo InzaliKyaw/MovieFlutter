@@ -9,7 +9,7 @@ import 'package:the_movie_app_padc/persistance/type_converters/spoken_language_t
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'dart:async';
 
-import 'daos/movie_dao.dart';
+import 'daos/movie_dao_d.dart';
 
 // part 'movie_booking_database.g.dart';
 //

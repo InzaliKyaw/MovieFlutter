@@ -213,6 +213,69 @@ class MovieVO extends HiveObject{
       this.type,
   });
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MovieVO &&
+          runtimeType == other.runtimeType &&
+          adult == other.adult &&
+          backDropPath == other.backDropPath &&
+          genreIds == other.genreIds &&
+          id == other.id &&
+          originalLanguage == other.originalLanguage &&
+          originalTitle == other.originalTitle &&
+          overview == other.overview &&
+          popularity == other.popularity &&
+          posterPath == other.posterPath &&
+          releaseDate == other.releaseDate &&
+          title == other.title &&
+          video == other.video &&
+          voteAverage == other.voteAverage &&
+          voteCount == other.voteCount &&
+          belongsToCollection == other.belongsToCollection &&
+          budget == other.budget &&
+          genres == other.genres &&
+          homePage == other.homePage &&
+          imdbId == other.imdbId &&
+          productionCompanies == other.productionCompanies &&
+          productionCountries == other.productionCountries &&
+          revenue == other.revenue &&
+          runTime == other.runTime &&
+          spokenLanguages == other.spokenLanguages &&
+          status == other.status &&
+          tagLine == other.tagLine &&
+          type == other.type;
+
+  @override
+  int get hashCode =>
+      adult.hashCode ^
+      backDropPath.hashCode ^
+      genreIds.hashCode ^
+      id.hashCode ^
+      originalLanguage.hashCode ^
+      originalTitle.hashCode ^
+      overview.hashCode ^
+      popularity.hashCode ^
+      posterPath.hashCode ^
+      releaseDate.hashCode ^
+      title.hashCode ^
+      video.hashCode ^
+      voteAverage.hashCode ^
+      voteCount.hashCode ^
+      belongsToCollection.hashCode ^
+      budget.hashCode ^
+      genres.hashCode ^
+      homePage.hashCode ^
+      imdbId.hashCode ^
+      productionCompanies.hashCode ^
+      productionCountries.hashCode ^
+      revenue.hashCode ^
+      runTime.hashCode ^
+      spokenLanguages.hashCode ^
+      status.hashCode ^
+      tagLine.hashCode ^
+      type.hashCode;
+
   factory MovieVO.fromJson(Map<String, dynamic> json) => _$MovieVOFromJson(json);
 
   Map<String, dynamic> toJson() => _$MovieVOToJson(this);

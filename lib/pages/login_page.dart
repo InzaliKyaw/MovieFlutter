@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:the_movie_app_padc/components/cinema_button_icon.dart';
 import 'package:the_movie_app_padc/components/cinema_button2.dart';
-import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
 import 'package:the_movie_app_padc/network/api_constants.dart';
 import 'package:the_movie_app_padc/pages/otp_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
@@ -10,6 +9,8 @@ import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
 import 'package:the_movie_app_padc/utils/spaces.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
+
+import '../data/models/movie_booking_model_impl.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,7 +22,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
   /// Model
-  final MovieBookingModel _model = MovieBookingModel();
+  final MovieBookingModelImpl _model = MovieBookingModelImpl();
   final phController = TextEditingController();
 
   void initState(){
@@ -214,7 +215,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
   var selectedItem = "";
 
   /// Model
-  final MovieBookingModel _model = MovieBookingModel();
+  final MovieBookingModelImpl _model = MovieBookingModelImpl();
 
 
   @override

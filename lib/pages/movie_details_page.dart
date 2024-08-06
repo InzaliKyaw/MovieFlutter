@@ -12,6 +12,7 @@ import 'package:the_movie_app_padc/utils/images.dart';
 import 'package:the_movie_app_padc/pages/cast_item_view.dart';
 import 'package:the_movie_app_padc/utils/spaces.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
+import 'package:the_movie_app_padc/utils/widget_keys.dart';
 
 import '../components/best_popular_movies_and_series_section_view.dart';
 import '../data/vos/movie_vo.dart';
@@ -327,6 +328,7 @@ class MovieLargeImageSmallImageAndInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      key: const Key(kMovieDetailsTopSectionKey),
       child: SizedBox(
         height: 391,
         child: Stack(

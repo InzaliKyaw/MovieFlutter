@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:the_movie_app_padc/data/models/movie_booking_model.dart';
+import 'package:the_movie_app_padc/data/models/movie_booking_model_impl.dart';
 import 'package:the_movie_app_padc/data/vos/credit_vo.dart';
 import 'dart:async';
 
@@ -9,7 +10,7 @@ import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 class MovieDetailsBloc extends ChangeNotifier{
 
   /// Model
-  final MovieBookingModel _model = MovieBookingModel();
+  final MovieBookingModelImpl _model = MovieBookingModelImpl();
 
   /// State
   MovieVO? movieDetails;

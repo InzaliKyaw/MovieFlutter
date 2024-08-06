@@ -16,6 +16,7 @@ class MovieListItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 200,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(kMarginMedium),
@@ -112,17 +113,22 @@ class MovieNameAndIMDBView extends StatelessWidget {
       children: [
 
         /// Name
-         Text(
-          movieVO?.title ?? "",
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: kTextSmall
-          ),
-        ),
+         SizedBox(
+           width: 100,
+           child: Text(
+             key: Key(movieVO?.title ?? ""),
+             movieVO?.title ?? "",
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: kTextSmall
+            ),
+                   ),
+         ),
 
         /// Spacer
-        const Spacer(),
-        
+
         /// IMDb
         Image.asset( "assets/images/imdb_logo.png",
         width: kMarginXLarge,
