@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/components/ticket_button.dart';
 import 'package:the_movie_app_padc/pages/check_out_page.dart';
-import 'package:the_movie_app_padc/pages/snack_page.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
@@ -284,7 +283,7 @@ class _TicketDetailState extends State<TicketDetail> {
                                             ),),
                                         ),
                                         const Spacer(),
-                                        const Text(kSnackPrice,
+                                        const Text(kKyats,
                                           style: TextStyle(
                                               color: Colors.grey,
                                               fontSize: 14,

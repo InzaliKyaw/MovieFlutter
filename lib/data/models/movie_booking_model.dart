@@ -65,9 +65,6 @@ Future<MovieVO> getMovieDetails(String movieId){
 }
 
 Future<GetOTPResponse> getOTP(String phNumber){
-  // return mDataAgent.getOTP(phNumber).then((OTPVO) async {
-  //   return OTPVO;
-  // });
   return mDataAgent.getOTP(phNumber);
 }
 

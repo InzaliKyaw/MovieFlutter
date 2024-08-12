@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/components/cinema_button_icon.dart';
 import 'package:the_movie_app_padc/components/item_payment.dart';
+import 'package:the_movie_app_padc/data/vos/snack_dummy_vo.dart';
 import 'package:the_movie_app_padc/pages/ticket_done.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
@@ -25,7 +26,7 @@ class _PaymentPageState extends State<PaymentPage> {
            /// App Bar
            Padding(
              padding: const EdgeInsets.symmetric(
-                 horizontal: kMarginLarge, vertical: kMarginMedium),
+                 horizontal: kMarginMedium, vertical: kMarginLarge),
              child: Row(
                children: [
                  GestureDetector(
@@ -33,9 +34,9 @@ class _PaymentPageState extends State<PaymentPage> {
                      Navigator.pop(context);
                    },
                    child: const Icon(
-                     Icons.chevron_left,
+                     Icons.keyboard_arrow_left_rounded,
                      color: Colors.white,
-                     size: kMarginLarge,
+                     size: kMargin34,
                    ),
                  ),
                  const Expanded(
@@ -46,7 +47,9 @@ class _PaymentPageState extends State<PaymentPage> {
                        style: TextStyle(
                            color: Colors.white,
                            fontSize: 22,
-                           fontWeight: FontWeight.w700),
+                           fontWeight: FontWeight.w700,
+                           fontFamily: 'DMSans'
+                       ),
                      ),
                    ),
                  ),
@@ -80,7 +83,7 @@ class _PaymentPageState extends State<PaymentPage> {
            ),
            /// Unlock offer button
             Padding(
-             padding: EdgeInsets.all( 24.0),
+             padding: const EdgeInsets.all( 24.0),
              child: CinemaButtonIcon(img: kOfferIcon, label: kOffer, bgColor: kPrimaryColor,onPressed: (){
                Navigator.push(context, MaterialPageRoute(builder: (context)=> const TicketDone()));
              },),
@@ -89,24 +92,26 @@ class _PaymentPageState extends State<PaymentPage> {
            const Align(
              alignment: Alignment.topLeft,
              child: Padding(
-               padding: EdgeInsets.symmetric(horizontal: 16.0),
+               padding: EdgeInsets.symmetric(horizontal: 16.0,vertical: kMarginMedium2),
                child: Text(kChoosePayment,
                  style: TextStyle(
                      fontSize: 18,
                      color: kPrimaryColor,
-                     fontWeight: FontWeight.w700
+                     fontWeight: FontWeight.w700,
+                     fontFamily: 'DMSans'
                  ),),
              ),
            ),
            /// List View payments
            Expanded(
              child: ListView.builder(itemBuilder: (context,index){
-               return const Padding(
-                 padding: EdgeInsets.all(8.0),
-                 child: ItemPayment(imgString: kPaymentIcon, txtLabel: kQuickPay, itemColor: Colors.white,rowPadding:14),
+               BankItemVO bankItem= bankList[index];
+               return Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: ItemPayment(imgString: bankItem.bankImgString, txtLabel: bankItem.bankName, itemColor: Colors.white,rowPadding:14),
                );
              },
-               itemCount: 7,),
+               itemCount: bankList.length,),
            )
          ],
                     ),

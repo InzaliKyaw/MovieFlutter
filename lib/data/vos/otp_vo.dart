@@ -4,7 +4,7 @@ import 'package:the_movie_app_padc/persistance/hive_constants.dart';
 part 'otp_vo.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: kOTPVO,adapterName: kAdapterNameOTPVO)
+@HiveType(typeId: kHiveTypeIdOTPVO,adapterName: kAdapterNameOTPVO)
 class OTPVO{
 
   @JsonKey(name: "id")

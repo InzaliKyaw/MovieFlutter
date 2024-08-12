@@ -58,5 +58,11 @@ const kPurchaseIcon = "assets/images/purchase_icon.png";
 const kTicketCancel = "assets/images/ticket_cancel.png";
 const kStar = "assets/images/star.png";
 
-
-
+/// Payment page
+const kUPI  = "assets/images/upi.png";
+const kGiftVoucher = "assets/images/gift_voucher.png";
+const kQuickPay = "assets/images/quick_pay.png";
+const kCreditCard = "assets/images/credit.png";
+const kRedeemPoint = "assets/images/redeem_point.png";
+const kMobileWallet = "assets/images/mobile_wallet.png";
+const kNetBanking = "assets/images/net_banking.png";

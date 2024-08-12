@@ -1,4 +1,6 @@
 import 'package:the_movie_app_padc/components/item_payment.dart';
+import 'package:the_movie_app_padc/components/item_setting.dart';
+import 'package:the_movie_app_padc/data/vos/snack_dummy_vo.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
@@ -61,8 +63,9 @@ class ProfilePage extends StatelessWidget {
       ),
       Expanded(
         child: ListView.builder(itemBuilder: (context, index) {
-          return const ItemPayment(
-            imgString: kPurchaseIcon, txtLabel: kPurchaseHistory, itemColor: Colors.grey,rowPadding: 24,);
+           SettingItemVO settingVO =  settingItemList[index];
+          return  ItemSetting(
+            imgString: settingVO.settingImgString  , txtLabel: settingVO.settingName, itemColor: Colors.grey,rowPadding: 24,);
         }, itemCount: 7,),
       ),
     ],),

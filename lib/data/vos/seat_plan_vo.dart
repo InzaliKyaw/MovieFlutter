@@ -19,7 +19,10 @@ class SeatPlanVO{
   @JsonKey(name: "price")
   int? price;
 
-  SeatPlanVO(this.id, this.type, this.seatName, this.symbol, this.price);
+
+
+  SeatPlanVO(this.id, this.type, this.seatName, this.symbol, this.price,
+      );
 
   factory SeatPlanVO.fromJson(Map<String, dynamic> json) => _$SeatPlanVOFromJson(json);
 

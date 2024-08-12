@@ -28,13 +28,13 @@ const double kLocationIconSize = 30;
 const double kBannerHeight = 170;
 const double kNowPlayingAndComingSoonTabBarHeight = 55;
 const double kMovieListItemHeight = 279;
-const double kMovieListItemImageHeight = 212;
+const double kMovieListItemImageHeight = 240;
 const double kMovieDetailsTopSectionHeight = 376;
 const double kMovieDetailsTopImageHeight = 220;
 const double kIMDBWidth = 43;
 const double kIMDBHeight = 28;
 const double kMovieDetailsSmallImageWidth = 140;
-const double kMovieDetailsSmallImageHeight = 180;
+const double kMovieDetailsSmallImageHeight = 200;
 
 const double kMovieDetailsBottomContainerHeight = 128;
 const double kBookingButtonHeight = 49;

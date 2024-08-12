@@ -9,7 +9,7 @@ part of 'get_cinema_timeslot_response.dart';
 GetCinemaDayTimeSlotResponse _$GetCinemaDayTimeSlotResponseFromJson(
         Map<String, dynamic> json) =>
     GetCinemaDayTimeSlotResponse(
-      code: json['code'] as int?,
+      code: (json['code'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => CinemaTimeSlotVO.fromJson(e as Map<String, dynamic>))

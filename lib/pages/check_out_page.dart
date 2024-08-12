@@ -11,7 +11,14 @@ import 'package:the_movie_app_padc/utils/spaces.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 
 class CheckOutPage extends StatefulWidget {
-  const CheckOutPage({Key? key}) : super(key: key);
+  final int ttlSeatPrice;
+  final int ttlSnackPrice;
+
+  const CheckOutPage({
+    super.key,
+    required this.ttlSeatPrice,
+    required this.ttlSnackPrice,
+  });
 
   @override
   State<CheckOutPage> createState() => _CheckOutPageState();
@@ -25,6 +32,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
 
   @override
   Widget build(BuildContext context) {
+    int totalPrice = widget.ttlSnackPrice + widget.ttlSeatPrice + 500;
     return Scaffold(
       backgroundColor: kGrey2,
       body: SafeArea(
@@ -35,7 +43,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
             /// App Bar
             Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: kMarginLarge, vertical: kMarginMedium),
+                  horizontal: kMarginMedium, vertical: kMarginLarge),
               child: Row(
                 children: [
                   GestureDetector(
@@ -43,9 +51,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       Navigator.pop(context);
                     },
                     child: const Icon(
-                      Icons.chevron_left,
+                      Icons.keyboard_arrow_left_rounded,
                       color: Colors.white,
-                      size: kMarginLarge,
+                      size: kMargin34,
                     ),
                   ),
                     const Expanded(
@@ -56,6 +64,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 22,
+                            fontFamily: 'DMSans',
                             fontWeight: FontWeight.w700),
                                          ),
                                          ),
@@ -192,21 +201,38 @@ class _CheckOutPageState extends State<CheckOutPage> {
                         ),
                       ),
                       /// Ticket Price
-                      const Row(
+                       Row(
                         children: [
-                          Text(kSeatType,
+                          const Text(kSeatType,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold
                             ),),
                           Spacer(),
-                          Text(kSeatPrice,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold
-                            ),)
+                          RichText(
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: widget.ttlSeatPrice.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text:
+                                  kKyats,
+                                  style: TextStyle(
+                                      fontWeight:
+                                      FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 16),
+                                )
+                              ]
+                            )
+                           )
                         ],
                       ),
                       const Padding(
@@ -262,12 +288,34 @@ class _CheckOutPageState extends State<CheckOutPage> {
                             ),
                           ),
                           const Spacer(),
-                          const Text(kFoodPrice,
-                          style: TextStyle(
-                            fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                          ),)
+                          RichText(
+                              text: TextSpan(
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: widget.ttlSnackPrice.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold
+                                      ),
+                                    ),
+                                    const TextSpan(
+                                      text: kKyats,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 16),
+                                    )
+                                  ]
+                              )
+                          )
+
+                          // const Text(kFoodPrice,
+                          // style: TextStyle(
+                          //   fontSize: 16,
+                          //     color: Colors.white,
+                          //     fontWeight: FontWeight.bold
+                          // ),)
                         ],
                       ),
                       /// Snack Item List View
@@ -292,7 +340,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                        ),),
                                      ),
                                      const Spacer(),
-                                     const Text(kSnackPrice,
+                                     const Text(kKyats,
                                        style: TextStyle(
                                            color: Colors.grey,
                                            fontSize: 14,
@@ -418,21 +466,38 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       ),
                       const Spacer(),
                       /// Total Row
-                      const Row(
+                      Row(
                         children: [
-                          Text(kTotal,
+                          const Text(kTotal,
                           style: TextStyle(
                             fontSize: kTextRegular3x,
                             fontWeight: FontWeight.w700,
                             color: kPrimaryColor
                           ),),
-                          Spacer(),
-                          Text(kTotalPrice,
-                            style: TextStyle(
-                                fontSize: kTextRegular3x,
-                                fontWeight: FontWeight.w700,
-                                color: kPrimaryColor
-                            ),)
+                          const Spacer(),
+                          RichText(
+                              text: TextSpan(
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: totalPrice.toString(),
+                                      style: const TextStyle(
+                                          fontSize: kTextRegular3x,
+                                          fontWeight: FontWeight.w700,
+                                          color: kPrimaryColor
+                                      ),
+                                    ),
+                                    const TextSpan(
+                                      text:
+                                      kKyats,
+                                      style: TextStyle(
+                                          fontSize: kTextRegular3x,
+                                          fontWeight: FontWeight.w700,
+                                          color: kPrimaryColor
+                                      ),
+                                    )
+                                  ]
+                              )
+                          )
                         ],
                       )
                     ],

@@ -6,7 +6,6 @@ import '../../persistance/hive_constants.dart';
 part 'get_otp_response.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: kHiveTypeIdOTPVO,adapterName: kAdapterNameOTPVO)
 class GetOTPResponse{
 
   @JsonKey(name: "code")

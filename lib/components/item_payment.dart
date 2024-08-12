@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
+import 'package:the_movie_app_padc/utils/images.dart';
 
-class ItemPayment extends StatelessWidget {
+class ItemPayment extends StatefulWidget {
   final String imgString;
   final String txtLabel;
   final Color itemColor;
@@ -16,6 +17,11 @@ class ItemPayment extends StatelessWidget {
   });
 
   @override
+  State<ItemPayment> createState() => _ItemPaymentState();
+}
+
+class _ItemPaymentState extends State<ItemPayment> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -29,11 +35,11 @@ class ItemPayment extends StatelessWidget {
               color: Colors.grey,
               width: 1
           ),
-          // top: BorderSide(
-          //     color: Colors.grey,
-          //     width: 1
-          // ),
           bottom: BorderSide(
+              color: Colors.grey,
+              width: 1
+          ),
+          top: BorderSide(
               color: Colors.grey,
               width: 1
           ),
@@ -41,26 +47,28 @@ class ItemPayment extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.all(rowPadding),
+        padding: EdgeInsets.all(widget.rowPadding),
         child: Row(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Image.asset(imgString,
-                height: 24,
-                width: 24,
+              child: Image.asset( (widget.imgString.isEmpty) ? kQuickPay : widget.imgString ,
+                height: 26,
+                width: 26,
+                fit: BoxFit.cover,
                 color: Colors.white,),
             ),
-            Text(txtLabel,
+            Text(widget.txtLabel,
               style: const TextStyle(
                   fontSize: kTextRegular,
                   color: Colors.white,
+                  fontFamily: 'DMSans',
                   fontWeight: FontWeight.w700
               ),
             ),
-            const Spacer(),
+             const Spacer(),
              Icon(Icons.chevron_right,
-              color: itemColor,)
+              color: widget.itemColor,)
           ],
         ),
       ),

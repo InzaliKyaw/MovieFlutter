@@ -34,30 +34,17 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
   int selectedIndex = 0;
   Color? primaryColor;
   late String selectedDate;
-
-  void cinemaTimeSlotVisibility(bool isSelected) {
-      if(isSelected){
-        isCinemaVisible = true;
-      }else{
-        isCinemaVisible = false;
-      }
-      //   if (isCinemaVisible == false) {
-      //     isCinemaVisible =  true;
-      //   } else {
-      //     isCinemaVisible = false;
-      //   }
-      // }else{
-      //   isCinemaVisible = false;
-      // }
-  }
+  List<TimeslotVO>? timeslotList = [];
+  String chosenDate = "";
 
   Future<void> getCinemaFromNetwork(String chosenDate) async {
-    String token = await getTokenFromSharedPreference();
+    String token = "Bearer 12930|YIEfih7eOpgpPqvkb0Of7SSPhTFZCUqK9jpBEntB";
     _model.getCinemaDayTime(chosenDate, token).then((value) {
       if (value.code == 200) {
         if (value.data != null) {
           setState(() {
             cinemaList = value.data!;
+            print(cinemaList);
           });
         }
       } else {
@@ -79,7 +66,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
   @override
   void initState() {
     DateTime currentDateTime = DateTime(now.year, now.month, now.day);
-    selectedDate = DateFormat('yyyy-MM-dd').format(currentDateTime);
+    selectedDate = DateFormat('dd-MM-yyyy').format(currentDateTime);
     dateList = generateTwoWeeks();
      setState(() {
        dateList;
@@ -186,6 +173,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                   itemCount: dateList.length,
                   itemBuilder: (context, index) {
                     DateTime dateTimeF = dateList[index].date ?? now;
+                    chosenDate = DateFormat('dd-MM-yyyy').format(dateTimeF);
                     String formattedDate = DateFormat('EEE-MMM-d').format(dateTimeF);
                      var dayList =  formattedDate.split("-");
                     bool isSelected = dateList[index].isSelected ?? false;
@@ -217,8 +205,8 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                       child: GestureDetector(
                         onTap: (){
                           var curIndex = index;
-                          String chosenDate = DateFormat('yyyy-MM-dd').format(dateTimeF);
                           setState(() {
+                            chosenDate = DateFormat('dd-MM-yyyy').format(dateTimeF);
                             dateList[index].isSelected = true;
                             for(int i = 0; i< dateList.length; i++){
                               if(i!= curIndex){
@@ -291,7 +279,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
               secondLabel: kFillingFast,
               thirdLabel: kAlmostFull,
               firstColor: kPrimaryColor,
-              secondColor: Colors.deepOrange,
+              secondColor: kBrightOrange,
               thirdColor: kRedPinkColor,
             ),
           ),
@@ -300,21 +288,12 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
               CinemaTimeSlotVO cinema = cinemaList[index];
-              String? cinemaName =
-                  cinema.cinema != null ? cinemaList[index].cinema : "";
-              List<TimeslotVO>? timeslotList = cinemaList[index].timeslot;
+              String? cinemaName = cinema.cinema != null ? cinemaList[index].cinema : "";
+               timeslotList = cinemaList[index].timeslot;
               return GestureDetector(
                 onTap: () {
                   setState(() {
                     selectedIndex = index;
-
-                    cinemaList[index].isSelected = true;
-                    for(int i = 0; i< dateList.length; i++){
-                      if(i!= selectedIndex){
-                        cinemaList[i].isSelected = false;
-                      }
-                    }
-                    cinemaTimeSlotVisibility(cinemaList[index].isSelected ?? false);
                   });
                 },
                 child: Column(children: [
@@ -331,14 +310,21 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                               fontWeight: FontWeight.normal,
                               fontSize: 16),
                         ),
-                        const Text(
-                          kSeeDetails,
-                          style: TextStyle(
-                              color: kPrimaryColor,
-                              decoration: TextDecoration.underline,
-                              decorationColor: kPrimaryColor,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16),
+                        GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              cinemaList[index].isSelected =  !cinemaList[index].isSelected ;
+                            });
+                          },
+                          child: const Text(
+                            kSeeDetails,
+                            style: TextStyle(
+                                color: kPrimaryColor,
+                                decoration: TextDecoration.underline,
+                                decorationColor: kPrimaryColor,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16),
+                          ),
                         )
                       ],
                     ),
@@ -412,7 +398,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                     ],
                   ),
                   Visibility(
-                   visible: isCinemaVisible ,
+                    visible: cinemaList[index].isSelected,
                     child: SizedBox(
                       height: 300,
                       child: GridTimeSlotCinema(
@@ -420,7 +406,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SeatPlanPage(cinemaDayTimeslotId: cinema.cinemaId?? 0,)));
+                                  builder: (context) =>  SeatPlanPage(cinemaDayTimeslotId: cinemaList[index].cinemaId ?? 0, selectedDate: chosenDate,)));
                         },
                         timeslotVOList: timeslotList,
                       ),
@@ -432,7 +418,8 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                 ]),
               );
             }, childCount: cinemaList.length),
-          )
+          ),
+
         ]),
       ),
     ));

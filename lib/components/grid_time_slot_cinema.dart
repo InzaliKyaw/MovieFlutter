@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/data/vos/cinema_timeslot_vo.dart';
 import 'package:the_movie_app_padc/data/vos/timeslots_vo.dart';
 import 'package:the_movie_app_padc/pages/seat_plan_page.dart';
+import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
 
 /// GridTimeSlotCinema
@@ -24,17 +25,27 @@ class GridTimeSlotCinema extends StatelessWidget {
       itemBuilder:(context, index) {
         TimeslotVO? timeslotVO = timeslotVOList?[index];
         String? startTime =  timeslotVO?.startTime ?? "";
+        Color kBorderColor = Colors.grey;
+        Color kBackgroundColor = kGrey10Fade;
+        if(index == 1){
+          kBorderColor = kPrimaryColor;
+          kBackgroundColor = kPrimary10Fade;
+        }else if(index == 2){
+          kBorderColor = kRedPinkColor;
+          kBackgroundColor = kRedPink10Fade;
+        }
         return GestureDetector(
           onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal:14.0),
             child: Container(
               decoration: BoxDecoration(
+                  color: kBackgroundColor,
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Colors.grey)
+                  border: Border.all(color: kBorderColor)
               ),
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

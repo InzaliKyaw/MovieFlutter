@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/components/cinema_button_icon_custom.dart';
 import 'package:the_movie_app_padc/components/ticket_button.dart';
@@ -43,15 +42,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
-
-    /// Get Movie Details From Database
-    /*
-    _model.getMovieByIdFromDatabase(int.parse(widget.movieId ?? "0")).then((movie){
-      setState(() {
-        movieDetails = movie;
-      });
-    });
-     */
 
     MovieVO? movieDetailsFromDatabase = _model.getMovieDetailsFromDatabase(widget.movieId ?? "0");
     setState(() {
@@ -266,11 +256,11 @@ class StoryLine extends StatelessWidget {
             "Story Line",
           style: TextStyle(
             color: Colors.white,
-            fontSize: kTextRegular,
+            fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(height: kMarginMedium,),
+        const SizedBox(height: kMarginMedium,),
         Text(
           movieVO?.overview ?? "",
           style: const TextStyle(
@@ -361,8 +351,9 @@ class MovieLargeImageSmallImageAndInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      /// 391
       child: SizedBox(
-        height: 391,
+        height: 420,
         child: Stack(
           children: [
             /// Large Image and Info
@@ -423,7 +414,7 @@ class MovieInfoGenresView extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.57,
       child:  Padding(
-        padding: const EdgeInsets.only(left: kMarginMedium2),
+        padding: const EdgeInsets.only(left: kMarginSmall),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -436,7 +427,7 @@ class MovieInfoGenresView extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: kTextRegular2x
+              fontSize: kTextRegular2x,
             ),),
 
             const SizedBox(height: kMarginMedium2,),
@@ -482,17 +473,22 @@ class MovieNameAndRatingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Movie Name
-         Text(
-          movieVO?.title ?? "",
-          maxLines: 2,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: kTextRegular2x
-          ),
-        ),
+         SizedBox(
+           width: 100,
+           child: Text(
+            movieVO?.title ?? "",
+            maxLines: 2,
+            style: const TextStyle(
+              color: Colors.white,
+              overflow: TextOverflow.visible,
+              fontWeight: FontWeight.bold,
+              fontSize: kTextRegular2x
+            ),
+                   ),
+         ),
         const SizedBox(
           width: kMarginMedium,
         ),
@@ -525,23 +521,23 @@ class CastView extends StatelessWidget {
     return  Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(padding: EdgeInsets.symmetric(horizontal: kMarginMedium2),
+        const Padding(padding: EdgeInsets.only(left: kMarginMedium2,right:kMarginMedium2, top: kMarginLarge),
             child: Text(
               "Cast",
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.w700,
-                fontSize: kTextRegular
+                fontWeight: FontWeight.w600,
+                fontSize: 18
               ),
             )
         ),
 
         /// Spacer
-        const SizedBox(height: kMarginMedium3,),
+        const SizedBox(height: kMarginSmall,),
 
         /// Cast
         SizedBox(
-          height: kMarginXXLarge,
+          height: kTicketMovieWidth,
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: kMarginMedium2),
             scrollDirection: Axis.horizontal,
@@ -552,7 +548,8 @@ class CastView extends StatelessWidget {
           },
             itemCount: creditList.length,
           ),
-        )
+        ),
+        const SizedBox(height: kMargin64,),
       ],
     );
   }

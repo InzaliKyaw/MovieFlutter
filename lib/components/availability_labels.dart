@@ -39,7 +39,8 @@ class AvailabilityLabels extends StatelessWidget {
                 ),
                 Text(
                   "Available",
-                  style: TextStyle(color: firstColor, fontSize: 16),
+                  style: TextStyle(color: firstColor, fontSize: 16,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -56,7 +57,8 @@ class AvailabilityLabels extends StatelessWidget {
                 Text(
                   secondLabel,
                   style:
-                  TextStyle(color: secondColor, fontSize: 16),
+                  TextStyle(color: secondColor, fontSize: 16,
+                  fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -72,7 +74,8 @@ class AvailabilityLabels extends StatelessWidget {
                 ),
                 Text(
                   thirdLabel,
-                  style: TextStyle(color: thirdColor, fontSize: 16),
+                  style: TextStyle(color: thirdColor, fontSize: 16,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
             ),

@@ -8,6 +8,8 @@ import 'package:the_movie_app_padc/utils/dimens.dart';
 import 'package:the_movie_app_padc/utils/images.dart';
 import 'package:the_movie_app_padc/utils/spaces.dart';
 import 'package:the_movie_app_padc/utils/strings.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+
 
 class OTPPage extends StatefulWidget {
   final String? phNumber;
@@ -103,44 +105,32 @@ class _OTPPageState extends State<OTPPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              // child: PinCodeFields(
-              //   length: 6,
-              //   fieldBorderStyle: FieldBorderStyle.square,
-              //   responsive: false,
-              //   fieldHeight: 38.0,
-              //   fieldWidth: 38.0,
-              //   borderWidth: 1.0,
-              //   obscureText: true,
-              //   activeBorderColor: kPrimaryColor,
-              //   activeBackgroundColor:
-              //   const Color.fromRGBO(240, 240, 240, 1.0),
-              //   borderRadius: BorderRadius.circular(5.0),
-              //   keyboardType: TextInputType.number,
-              //   autoHideKeyboard: false,
-              //   fieldBackgroundColor:
-              //   const Color.fromRGBO(240, 240, 240, 1.0),
-              //   borderColor: const Color.fromRGBO(240, 240, 240, 1.0),
-              //   textStyle: const TextStyle(
-              //     fontSize: 18.0,
-              //     fontWeight: FontWeight.w600,
-              //   ),
-              //   onChange: (output) {
-              //     if (output.length == 6 &&
-              //         _pinController.text.isNotEmpty) {
-              //       setState(() {
-              //       });
-              //     } else {
-              //       setState(() {
-              //
-              //       });
-              //     }
-              //   },
-              //   onComplete: (output) {
-              //     // Your logic with pin code
-              //     print(output);
-              //   },
-              // ),
+              padding: const EdgeInsets.symmetric(vertical: 42.0),
+              child: OtpTextField(
+                numberOfFields: 6,
+                borderColor: Colors.white,
+                filled: true,
+                fieldWidth: 54,
+                //set to true to show as box or false to show as dash
+                showFieldAsBox: true,
+                fillColor: Colors.white,
+                //runs when a code is typed in
+                onCodeChanged: (String code) {
+                  //handle validation or checks here
+                },
+                //runs when every textfield is filled
+                onSubmit: (String verificationCode){
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (context){
+                  //       return AlertDialog(
+                  //         title: Text("Verification Code"),
+                  //         content: Text('Code entered is $verificationCode'),
+                  //       );
+                  //     }
+                  // );
+                }, // end onSubmit
+              ),
             ),
             verticalSpacing(48),
             RichText(text: const TextSpan(

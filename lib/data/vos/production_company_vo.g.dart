@@ -55,7 +55,7 @@ class ProductionCompanyVOAdapter extends TypeAdapter<ProductionCompanyVO> {
 
 ProductionCompanyVO _$ProductionCompanyVOFromJson(Map<String, dynamic> json) =>
     ProductionCompanyVO(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['logo_path'] as String?,
       json['name'] as String?,
       json['origin_country'] as String?,

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:the_movie_app_padc/utils/strings.dart';
 
 class CinemaButton2 extends StatelessWidget {
   final String label;
@@ -34,6 +35,8 @@ class CinemaButton2 extends StatelessWidget {
           label,
           style: const TextStyle(
               color: Colors.black,
+              fontFamily: kDMSansFont,
+              fontWeight: FontWeight.bold,
               fontSize: 12),
           textAlign: TextAlign.center,
         ));

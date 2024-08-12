@@ -88,7 +88,7 @@ class MovieListItemView extends StatelessWidget {
           /// Movie Name and IMDB
            MovieNameAndIMDBView(movieVO: movieVO,),
 
-          const SizedBox(height: 10,),
+          // const SizedBox(height: 10,),
 
           /// Additional Info View
           const AdditionalInfoView()
@@ -107,22 +107,25 @@ class MovieNameAndIMDBView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.symmetric(horizontal: kMarginMedium),
+    return Padding(padding: const EdgeInsets.only(left: kMarginMedium),
     child: Row(
       children: [
 
         /// Name
-         Text(
-          movieVO?.title ?? "",
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: kTextSmall
-          ),
-        ),
+         SizedBox(
+           width: 80,
+           child: Text(
+            movieVO?.title ?? "",
+            style: const TextStyle(
+              overflow: TextOverflow.ellipsis,
+              color: Colors.white,
+              fontSize: kTextSmall
+            ),
+                   ),
+         ),
 
-        /// Spacer
         const Spacer(),
-        
+
         /// IMDb
         Image.asset( "assets/images/imdb_logo.png",
         width: kMarginXLarge,
@@ -148,7 +151,7 @@ class AdditionalInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(padding: EdgeInsets.symmetric(horizontal: kMarginMedium ),
+    return  Padding(padding: const EdgeInsets.symmetric(horizontal: kMarginMedium ),
     child: Row(
       children: [
         /// Restriction
