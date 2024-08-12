@@ -7,9 +7,9 @@ part of 'timeslots_vo.dart';
 // **************************************************************************
 
 TimeslotVO _$TimeslotVOFromJson(Map<String, dynamic> json) => TimeslotVO(
-      json['status'] as int?,
+      (json['status'] as num?)?.toInt(),
       json['start_time'] as String?,
-      json['cinema_day_timeslot_id'] as int?,
+      (json['cinema_day_timeslot_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$TimeslotVOToJson(TimeslotVO instance) =>

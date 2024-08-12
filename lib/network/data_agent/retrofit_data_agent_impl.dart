@@ -8,6 +8,7 @@ import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
 import 'package:the_movie_app_padc/exception/custom_exception.dart';
 import 'package:the_movie_app_padc/network/api_constants.dart';
 import 'package:the_movie_app_padc/network/data_agent/movie_booking_data_agent.dart';
+import 'package:the_movie_app_padc/network/response/cinema_booking_api.dart';
 import 'package:the_movie_app_padc/network/response/get_cinema_timeslot_response.dart';
 import 'package:the_movie_app_padc/network/response/get_otp_response.dart';
 import 'package:the_movie_app_padc/network/response/get_seat_response.dart';
@@ -16,6 +17,7 @@ import 'package:the_movie_app_padc/network/response/the_movie_booking_api.dart';
 
 class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
   late TheMovieBookingApi mApi;
+  late CinemaBookingApi cinemaBookingApi;
 
   static RetrofitDataAgentImpl? _singleton;
 
@@ -27,6 +29,7 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
   RetrofitDataAgentImpl._internal() {
     final dio = Dio();
     mApi = TheMovieBookingApi(dio);
+    cinemaBookingApi = CinemaBookingApi(dio);
   }
 
   @override
@@ -63,7 +66,7 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
 
   @override
   Future<GetOTPResponse> getOTP(String phNumber) {
-    return mApi.getOTP(phNumber)
+    return cinemaBookingApi.getOTP(phNumber)
         .catchError((error) {
       throw _createException(error);
     });
@@ -83,7 +86,7 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
 
   @override
   Future<GetOTPResponse> getCheckOTP(String phNumber, String otp) {
-    return mApi.getCheckOTP(phNumber,otp)
+    return cinemaBookingApi.getCheckOTP(phNumber,otp)
         .catchError((error) {
       throw _createException(error);
     });
@@ -91,7 +94,7 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
 
   @override
   Future<List<CityVO>> getCities() {
-    return mApi.getCities()
+    return cinemaBookingApi.getCities()
         .asStream()
         .map((response) => response?.cities ?? [])
         .first
@@ -102,7 +105,7 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
 
   @override
   Future<GetCinemaDayTimeSlotResponse> getCinemaDayTimeSlot(String date, String token) {
-    return mApi.getCinemaDayTimeSlot(date, token)
+    return cinemaBookingApi.getCinemaDayTimeSlot(date, token)
         .catchError((error){
       throw _createException(error);
     });
@@ -147,7 +150,7 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
 
   @override
   Future<GetSeatResponse> getSeatResponse(String date, int cinemaDayTimeslotId, String token) {
-    return mApi.getSeat(date, cinemaDayTimeslotId, token)
+    return cinemaBookingApi.getSeat(date, cinemaDayTimeslotId, token)
         .catchError((error){
       throw _createException(error);
     });
@@ -155,7 +158,7 @@ class RetrofitDataAgentImpl extends TheMovieBookingDataAgent {
 
   @override
   Future<GetSnackResponse> getSnackResponse(String token) {
-    return mApi.getSnack(token)
+    return cinemaBookingApi.getSnack(token)
         .catchError((error){
       throw _createException(error);
     });

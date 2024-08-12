@@ -23,7 +23,7 @@ class CinemaButtonIcon extends StatelessWidget {
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               // side: const BorderSide(width: 1, color: Color(0xffd9d9d9)),
-              borderRadius: BorderRadius.circular(15.0),
+              borderRadius: BorderRadius.circular(5.0),
             ),
           ),
         ),
@@ -38,6 +38,7 @@ class CinemaButtonIcon extends StatelessWidget {
                 width: 30,
                 decoration: BoxDecoration(
                   image: DecorationImage(
+                     invertColors: true,
                       image: AssetImage(img),
                       fit: BoxFit.fill),
                 ),
@@ -47,6 +48,8 @@ class CinemaButtonIcon extends StatelessWidget {
               label,
               style: const TextStyle(
                   color: Colors.black,
+                  fontFamily: 'DMSans',
+                  fontWeight: FontWeight.bold,
                   fontSize: 12),
               textAlign: TextAlign.center,
             ),

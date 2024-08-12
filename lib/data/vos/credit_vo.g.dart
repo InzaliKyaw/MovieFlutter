@@ -8,15 +8,15 @@ part of 'credit_vo.dart';
 
 CreditVO _$CreditVOFromJson(Map<String, dynamic> json) => CreditVO(
       json['adult'] as bool?,
-      json['gender'] as int?,
-      json['id'] as int?,
+      (json['gender'] as num?)?.toInt(),
+      (json['id'] as num?)?.toInt(),
       json['known_for_department'] as String?,
       json['original_name'] as String?,
       (json['popularity'] as num?)?.toDouble(),
-      json['cast_id'] as int?,
+      (json['cast_id'] as num?)?.toInt(),
       json['character'] as String?,
       json['credit_id'] as String?,
-      json['order'] as int?,
+      (json['order'] as num?)?.toInt(),
       json['name'] as String,
       json['profile_path'] as String?,
     );

@@ -48,7 +48,7 @@ class GenreVOAdapter extends TypeAdapter<GenreVO> {
 // **************************************************************************
 
 GenreVO _$GenreVOFromJson(Map<String, dynamic> json) => GenreVO(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['name'] as String?,
     );
 

@@ -12,7 +12,10 @@ import 'package:the_movie_app_padc/utils/strings.dart';
 
 class SeatPlanPage extends StatefulWidget {
   final int cinemaDayTimeslotId;
-   const SeatPlanPage({super.key, required this.cinemaDayTimeslotId});
+  final String selectedDate;
+
+  const SeatPlanPage({super.key, required this.cinemaDayTimeslotId,
+  required this.selectedDate});
 
   @override
   State<SeatPlanPage> createState() => _SeatPlanPageState();
@@ -26,32 +29,38 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
   double _value = 20;
   double scale = 1;
   List<SeatPlanVO> seatList = [];
-
-  Future<void> getSeatPlanFromNetwork(String chosenDate, int cinemaDayTimeSlotid) async{
-    String token = await getTokenFromSharedPreference();
-    _model.getSeatResponse(chosenDate, cinemaDayTimeSlotid, token).then((value) {
-      List<List<SeatPlanVO>>? seatPlan = [];
-       seatPlan = value.seatPlanList;
-       for(var list in seatPlan!){
-          for(var l in list){
-            seatList.add(l);
-          }
-       }
-      setState(() {
-        seatList;
-      });
-    }).catchError((error){
-      showDialog(context: context, builder: (context)=> AlertDialog(
-        content: Text(error.toString()),
-      ));
-    });
-  }
+  int totalPrice = 0;
+  int countTicket = 0;
 
   @override
   void initState() {
-    getSeatPlanFromNetwork("2022-08-18", 7);
+    getSeatPlanFromNetwork(widget.selectedDate, widget.cinemaDayTimeslotId);
     super.initState();
   }
+
+  Future<void> getSeatPlanFromNetwork(String chosenDate, int cinemaDayTimeSlotid) async {
+    String token = "Bearer ${await getTokenFromSharedPreference()}";
+    _model.getSeatResponse(chosenDate, cinemaDayTimeSlotid, token)
+        .then((value) {
+      List<List<SeatPlanVO>>? seatPlan = [];
+      seatPlan = value.seatPlanList;
+      for(var list in seatPlan!) {
+        for (var l in list) {
+          seatList.add(l);
+        }
+      }
+      setState(() {
+        seatList;
+      });
+    }).catchError((error) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                content: Text(error.toString()),
+              ));
+    });
+  }
+
 
 
   @override
@@ -65,6 +74,7 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(14.0),
+
               /// App Bar
               child: Row(
                 children: [
@@ -83,34 +93,42 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
             ),
 
             /// Cinema Screen
-            Stack(
-              children: [
-                const Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    kScreen,
-                    style: TextStyle(color: Colors.white),
+            SizedBox(
+              height: 140,
+              width: double.infinity,
+              child: Stack(
+                children: [
+                  const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      kScreen,
+                      style: TextStyle(
+                          color: Colors.white,
+                        fontFamily: kDMSansFont,
+                        fontSize: 18
+                      ),
+                    ),
                   ),
-                ),
-                Image.asset(kCinemaScreen),
-              ],
+                  Image.asset(kCinemaScreen),
+                ],
+              ),
             ),
 
             /// Grid Chair
             Transform.scale(
               scale: scale,
               child: SizedBox(
-                height: 400,
+                height: 480,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 14,
                       mainAxisSpacing: 8,
                       crossAxisSpacing: 2,
                     ),
                     itemBuilder: (context, index) {
-
                       SeatPlanVO seat = seatList[index];
                       if (seat.type == "available") {
                         seatColor = Colors.white;
@@ -144,11 +162,29 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                           ),
                           Visibility(
                               visible: isSeatVisible,
-                              child: Image.asset(
-                                kSeat,
-                                width: 24,
-                                height: 24,
-                                color: seatColor,
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (seat.type == "available") {
+                                    setState(() {
+                                      seat.type = "your selection";
+                                      totalPrice += seat.price ?? 0;
+                                      countTicket += 1;
+                                    });
+                                  } else if (seat.type == "your selection") {
+                                    setState(() {
+                                      seat.type = "available";
+                                      totalPrice -= seat.price ?? 0;
+                                      countTicket -= 1;
+                                    });
+                                  }
+                                  seatList;
+                                },
+                                child: Image.asset(
+                                  kSeat,
+                                  width: 20,
+                                  height: 20,
+                                  color: seatColor,
+                                ),
                               )),
                         ],
                       );
@@ -167,24 +203,27 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
               secondColor: Colors.grey,
               thirdColor: kPrimaryColor,
             ),
+
             /// Chair Slider
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32.0),
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Row(
                 children: [
-                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
-                          if(_value < 100){
-                            _value += 10;
+                          if (_value > 0) {
+                            _value -= 10;
                             seatList;
                           }
                         });
                       },
-                      child: const Icon(Icons.add,
-                      color: Colors.white,),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   Expanded(
@@ -198,26 +237,28 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                       onChanged: (value) {
                         setState(() {
                           _value = value;
-                          scale = (value/100) + 1;
+                          scale = (value / 100) + 1;
                         });
                       },
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
-                        if(_value > 0){
-                          _value -= 10;
+                        if (_value < 100) {
+                          _value += 10;
                           seatList;
                         }
                       });
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Image.asset(kMinusIcon,
-                      color: Colors.white,
-                      height: 24,
-                      width: 24,),
+                      child: Image.asset(
+                        kMinusIcon,
+                        color: Colors.white,
+                        height: 24,
+                        width: 24,
+                      ),
                     ),
                   ),
                 ],
@@ -230,22 +271,33 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(14.0),
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          kTicketNumber,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 18),
+                        RichText(
+                          text: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                              text: countTicket.toString(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 18),
+                            ),
+                            const TextSpan(
+                              text: kTickets,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 18),
+                            )
+                          ]),
                         ),
                         Text(
-                          kPriceKyats,
-                          style: TextStyle(
+                          totalPrice.toString(),
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: kPrimaryColor,
                               fontSize: 20),
@@ -260,7 +312,10 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                       btnColor: kPrimaryColor,
                       txtColor: Colors.black,
                       onTap: () {
-                         Navigator.push(context, MaterialPageRoute(builder: (context)=> SnackPage()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SnackPage(ttlSeatPrice: totalPrice,)));
                       },
                     ),
                   )

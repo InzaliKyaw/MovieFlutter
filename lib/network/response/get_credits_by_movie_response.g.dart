@@ -9,7 +9,7 @@ part of 'get_credits_by_movie_response.dart';
 GetCreditsByMovieResponse _$GetCreditsByMovieResponseFromJson(
         Map<String, dynamic> json) =>
     GetCreditsByMovieResponse(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       (json['cast'] as List<dynamic>?)
           ?.map((e) => CreditVO.fromJson(e as Map<String, dynamic>))
           .toList(),

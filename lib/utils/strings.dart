@@ -42,7 +42,7 @@ const String k3DDBOX = "3D DBOX";
 const String kScreen1 = "Screen1";
 const String kScreen2 = "Screen2";
 const String kAvailability = "21 Available";
-const String kScreen = "SCREEN";
+const String kScreen = "S C R E E N";
 const String kNormal = "Normal (4500ks)";
 const String kExecutive = "Executive (6500ks)";
 const String kPremium = "Premium (8500ks)";
@@ -54,7 +54,7 @@ const String kAlmostFull = "Almost Full";
 const String kTaken = "Taken";
 const String kYourSelection = "Your Selection";
 const String kBuyTicket = "Buy Ticket";
-const String kTicketNumber = "2 Tickets";
+const String kTickets = " Tickets";
 const String kPriceKyats = "17000KS";
 
 /// Snack Page
@@ -87,7 +87,7 @@ const String kPotato = "kPotato Chips (Qt.1)";
 const String kCola = "Coca-cola Large(Qt.1)";
 const String kPotatoesChips = "Potatoes Chips";
 const String kLargeCola = "Large Cola";
-const String kSnackPrice = "1000ks";
+const String kKyats = " KS";
 const String kConvenience = "Convenience Fee";
 const String k500 = "500Ks";
 const String kTotal = "Total";
@@ -135,3 +135,6 @@ const String k3500 = "3500Ks";
 const String k29500 = "29500Ks";
 const String k8am = "8am";
 const String k12pm = "12pm";
+
+/// Fonts
+const String kDMSansFont = 'DMSans';

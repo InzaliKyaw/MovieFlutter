@@ -54,7 +54,7 @@ class CollectionVOAdapter extends TypeAdapter<CollectionVO> {
 // **************************************************************************
 
 CollectionVO _$CollectionVOFromJson(Map<String, dynamic> json) => CollectionVO(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['name'] as String?,
       json['poster_path'] as String?,
       json['backdrop_path'] as String?,

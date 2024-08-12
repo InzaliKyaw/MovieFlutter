@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:the_movie_app_padc/utils/colors.dart';
 import 'package:the_movie_app_padc/utils/dimens.dart';
+import 'package:the_movie_app_padc/utils/strings.dart';
 
 import '../utils/images.dart';
 
@@ -46,7 +47,7 @@ class TicketButton extends StatelessWidget {
                     btnText,
                     style: TextStyle(
                         color: txtColor,
-                        fontWeight: FontWeight.w700
+                        fontWeight: FontWeight.w800
                     ),
                   ),
                 ),

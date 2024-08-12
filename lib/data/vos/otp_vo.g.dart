@@ -60,11 +60,11 @@ class OTPVOAdapter extends TypeAdapter<OTPVO> {
 // **************************************************************************
 
 OTPVO _$OTPVOFromJson(Map<String, dynamic> json) => OTPVO(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['name'] as String?,
       json['email'] as String?,
       json['phone'] as String?,
-      json['total_expense'] as int?,
+      (json['total_expense'] as num?)?.toInt(),
       json['profile_image'] as String?,
     );
 

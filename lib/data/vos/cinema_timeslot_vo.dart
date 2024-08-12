@@ -19,7 +19,7 @@ class CinemaTimeSlotVO{
 
   @HiveField(3)
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool? isSelected;
+  bool isSelected = false;
 
   CinemaTimeSlotVO(
       this.cinemaId,

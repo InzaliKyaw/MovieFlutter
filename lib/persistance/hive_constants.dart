@@ -5,8 +5,8 @@ const kHiveTypeIdGenreVO  = 2;
 const kHiveTypeIdProductionCompanyVO = 3;
 const kHiveTypeIdProductionCountryVO = 4;
 const kHiveTypeIdSpokenLanguage = 5;
-const kOTPVO = 6;
-const kHiveTypeIdOTPVO = 7;
+// const kOTPVO = 6;
+const kHiveTypeIdOTPVO = 6;
 
 
 /// Adapters

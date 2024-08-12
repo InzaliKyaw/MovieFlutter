@@ -8,7 +8,7 @@ part of 'get_seat_response.dart';
 
 GetSeatResponse _$GetSeatResponseFromJson(Map<String, dynamic> json) =>
     GetSeatResponse(
-      json['code'] as int?,
+      (json['code'] as num?)?.toInt(),
       json['message'] as String?,
       (json['data'] as List<dynamic>?)
           ?.map((e) => (e as List<dynamic>)

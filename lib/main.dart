@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:the_movie_app_padc/data/vos/collection_vo.dart';
 import 'package:the_movie_app_padc/data/vos/movie_vo.dart';
+import 'package:the_movie_app_padc/data/vos/otp_vo.dart';
 import 'package:the_movie_app_padc/data/vos/production_company_vo.dart';
 import 'package:the_movie_app_padc/data/vos/production_country_vo.dart';
 import 'package:the_movie_app_padc/data/vos/spoken_language_vo.dart';

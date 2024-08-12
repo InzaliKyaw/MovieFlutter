@@ -7,11 +7,11 @@ part of 'snack_vo.dart';
 // **************************************************************************
 
 SnackVO _$SnackVOFromJson(Map<String, dynamic> json) => SnackVO(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['name'] as String?,
       json['description'] as String?,
-      json['price'] as int?,
-      json['category_id'] as int?,
+      (json['price'] as num).toInt(),
+      (json['category_id'] as num?)?.toInt(),
       json['image'] as String?,
     );
 

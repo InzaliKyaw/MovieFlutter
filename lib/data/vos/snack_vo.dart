@@ -13,7 +13,7 @@ class SnackVO{
   String? description;
 
   @JsonKey(name:"price")
-  int? price;
+  int price;
 
   @JsonKey(name:"category_id")
   int? categoryId;
@@ -21,8 +21,21 @@ class SnackVO{
   @JsonKey(name:"image")
   String? snackUrl;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  int quantity;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool isAddBtnVisible;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool isPlusMinusVisible;
+
   SnackVO(this.id, this.name, this.description, this.price, this.categoryId,
-      this.snackUrl);
+      this.snackUrl,{
+    this.quantity = 0,
+    this.isAddBtnVisible = true,
+    this.isPlusMinusVisible = false
+  } );
 
   factory SnackVO.fromJson(Map<String, dynamic> json) => _$SnackVOFromJson(json);
 

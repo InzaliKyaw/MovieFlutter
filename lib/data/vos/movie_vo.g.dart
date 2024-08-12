@@ -125,7 +125,9 @@ class MovieVOAdapter extends TypeAdapter<MovieVO> {
 MovieVO _$MovieVOFromJson(Map<String, dynamic> json) => MovieVO(
       json['adult'] as bool?,
       json['backdrop_path'] as String?,
-      (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      (json['genre_ids'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
       json['belongs_to_collection'] == null
           ? null
           : CollectionVO.fromJson(
@@ -135,7 +137,7 @@ MovieVO _$MovieVOFromJson(Map<String, dynamic> json) => MovieVO(
           ?.map((e) => GenreVO.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['homepage'] as String?,
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['imdb_id'] as String?,
       json['original_language'] as String?,
       json['original_title'] as String?,
@@ -148,8 +150,8 @@ MovieVO _$MovieVOFromJson(Map<String, dynamic> json) => MovieVO(
       (json['production_countries'] as List<dynamic>?)
           ?.map((e) => ProductionCountryVO.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['revenue'] as int?,
-      json['runtime'] as int?,
+      (json['revenue'] as num?)?.toInt(),
+      (json['runtime'] as num?)?.toInt(),
       json['release_date'] as String?,
       (json['spoken_languages'] as List<dynamic>?)
           ?.map((e) => SpokenLanguageVO.fromJson(e as Map<String, dynamic>))
@@ -159,7 +161,7 @@ MovieVO _$MovieVOFromJson(Map<String, dynamic> json) => MovieVO(
       json['title'] as String?,
       json['video'] as bool?,
       (json['vote_average'] as num?)?.toDouble(),
-      json['vote_count'] as int?,
+      (json['vote_count'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$MovieVOToJson(MovieVO instance) => <String, dynamic>{
