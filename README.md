@@ -1,5 +1,6 @@
 # MovieFlutter
-This is the repository for Flutter project with MovieDB for practice.
+
+Discover the latest movies currently showing or coming soon with our intuitive app! Dive into detailed movie pages to learn more about each film. Once you've found your favorite, easily purchase tickets by selecting the perfect time and day. Customize your cinema experience by choosing your seats and adjusting their size to fit your comfort. Don't forget to add your favorite snacks to complete the experience. With just a few taps, your perfect movie night is ready to go!
 
 https://github.com/user-attachments/assets/ecc11405-8eeb-4314-8c96-1eeea69241e8
 
