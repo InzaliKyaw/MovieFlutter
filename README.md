@@ -22,6 +22,6 @@ https://github.com/user-attachments/assets/ecc11405-8eeb-4314-8c96-1eeea69241e8
 
 - Shared Preferences
 - [Hive](https://pub.dev/packages/hive_flutter) (persistent data storage and CRUD operations)
-- [Floor] ()
+- [Floor] (https://pub.dev/packages/floor)
 
 
