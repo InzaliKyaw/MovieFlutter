@@ -68,261 +68,265 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(14.0),
+        child: Builder(
+          builder: (context) {
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(14.0),
 
-              /// App Bar
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.chevron_left,
-                      color: Colors.white,
-                      size: kMarginXLarge,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            /// Cinema Screen
-            SizedBox(
-              height: 140,
-              width: double.infinity,
-              child: Stack(
-                children: [
-                  const Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      kScreen,
-                      style: TextStyle(
+                  /// App Bar
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.chevron_left,
                           color: Colors.white,
-                        fontFamily: kDMSansFont,
-                        fontSize: 18
+                          size: kMarginXLarge,
+                        ),
                       ),
-                    ),
-                  ),
-                  Image.asset(kCinemaScreen),
-                ],
-              ),
-            ),
-
-            /// Grid Chair
-            Transform.scale(
-              scale: scale,
-              child: SizedBox(
-                height: 480,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 14,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 2,
-                    ),
-                    itemBuilder: (context, index) {
-                      SeatPlanVO seat = seatList[index];
-                      if (seat.type == "available") {
-                        seatColor = Colors.white;
-                        isTextVisible = false;
-                        isSeatVisible = true;
-                      } else if (seat.type == "text") {
-                        isSeatVisible = false;
-                        isTextVisible = true;
-                      } else if (seat.type == "your selection") {
-                        seatColor = kPrimaryColor;
-                        isTextVisible = false;
-                        isSeatVisible = true;
-                      } else if (seat.type == "taken") {
-                        seatColor = Colors.grey;
-                        isTextVisible = false;
-                        isSeatVisible = true;
-                      } else {
-                        isTextVisible = false;
-                        isSeatVisible = false;
-                      }
-                      // controlSeat(seat.text, seat.type);
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Visibility(
-                            visible: isTextVisible,
-                            child: Text(
-                              seat.symbol!,
-                              style: const TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                          Visibility(
-                              visible: isSeatVisible,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (seat.type == "available") {
-                                    setState(() {
-                                      seat.type = "your selection";
-                                      totalPrice += seat.price ?? 0;
-                                      countTicket += 1;
-                                    });
-                                  } else if (seat.type == "your selection") {
-                                    setState(() {
-                                      seat.type = "available";
-                                      totalPrice -= seat.price ?? 0;
-                                      countTicket -= 1;
-                                    });
-                                  }
-                                  seatList;
-                                },
-                                child: Image.asset(
-                                  kSeat,
-                                  width: 20,
-                                  height: 20,
-                                  color: seatColor,
-                                ),
-                              )),
-                        ],
-                      );
-                    },
-                    itemCount: seatList.length,
+                    ],
                   ),
                 ),
-              ),
-            ),
 
-            /// Chair Labels
-            const AvailabilityLabels(
-              secondLabel: kTaken,
-              thirdLabel: kYourSelection,
-              firstColor: Colors.white,
-              secondColor: Colors.grey,
-              thirdColor: kPrimaryColor,
-            ),
-
-            /// Chair Slider
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (_value > 0) {
-                            _value -= 10;
-                            seatList;
-                          }
-                        });
-                      },
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
+                /// Cinema Screen
+                SizedBox(
+                  height: 140,
+                  width: double.infinity,
+                  child: Stack(
+                    children: [
+                      const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          kScreen,
+                          style: TextStyle(
+                              color: Colors.white,
+                            fontFamily: kDMSansFont,
+                            fontSize: 18
+                          ),
+                        ),
                       ),
-                    ),
+                      Image.asset(kCinemaScreen),
+                    ],
                   ),
-                  Expanded(
-                    child: Slider(
-                      min: 0.0,
-                      max: 100.0,
-                      activeColor: Colors.grey,
-                      thumbColor: Colors.white,
-                      inactiveColor: Colors.grey,
-                      value: _value,
-                      onChanged: (value) {
-                        setState(() {
-                          _value = value;
-                          scale = (value / 100) + 1;
-                        });
-                      },
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (_value < 100) {
-                          _value += 10;
-                          seatList;
-                        }
-                      });
-                    },
+                ),
+
+                /// Grid Chair
+                Transform.scale(
+                  scale: scale,
+                  child: SizedBox(
+                    height: 480,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Image.asset(
-                        kMinusIcon,
-                        color: Colors.white,
-                        height: 24,
-                        width: 24,
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 14,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 2,
+                        ),
+                        itemBuilder: (context, index) {
+                          SeatPlanVO seat = seatList[index];
+                          if (seat.type == "available") {
+                            seatColor = Colors.white;
+                            isTextVisible = false;
+                            isSeatVisible = true;
+                          } else if (seat.type == "text") {
+                            isSeatVisible = false;
+                            isTextVisible = true;
+                          } else if (seat.type == "your selection") {
+                            seatColor = kPrimaryColor;
+                            isTextVisible = false;
+                            isSeatVisible = true;
+                          } else if (seat.type == "taken") {
+                            seatColor = Colors.grey;
+                            isTextVisible = false;
+                            isSeatVisible = true;
+                          } else {
+                            isTextVisible = false;
+                            isSeatVisible = false;
+                          }
+                          // controlSeat(seat.text, seat.type);
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Visibility(
+                                visible: isTextVisible,
+                                child: Text(
+                                  seat.symbol!,
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                              Visibility(
+                                  visible: isSeatVisible,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (seat.type == "available") {
+                                        setState(() {
+                                          seat.type = "your selection";
+                                          totalPrice += seat.price ?? 0;
+                                          countTicket += 1;
+                                        });
+                                      } else if (seat.type == "your selection") {
+                                        setState(() {
+                                          seat.type = "available";
+                                          totalPrice -= seat.price ?? 0;
+                                          countTicket -= 1;
+                                        });
+                                      }
+                                      seatList;
+                                    },
+                                    child: Image.asset(
+                                      kSeat,
+                                      width: 20,
+                                      height: 20,
+                                      color: seatColor,
+                                    ),
+                                  )),
+                            ],
+                          );
+                        },
+                        itemCount: seatList.length,
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
+                ),
 
-            /// Price and Ticket Button
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        RichText(
-                          text: TextSpan(children: <TextSpan>[
-                            TextSpan(
-                              text: countTicket.toString(),
+                /// Chair Labels
+                const AvailabilityLabels(
+                  secondLabel: kTaken,
+                  thirdLabel: kYourSelection,
+                  firstColor: Colors.white,
+                  secondColor: Colors.grey,
+                  thirdColor: kPrimaryColor,
+                ),
+
+                /// Chair Slider
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (_value > 0) {
+                                _value -= 10;
+                                seatList;
+                              }
+                            });
+                          },
+                          child: const Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Slider(
+                          min: 0.0,
+                          max: 100.0,
+                          activeColor: Colors.grey,
+                          thumbColor: Colors.white,
+                          inactiveColor: Colors.grey,
+                          value: _value,
+                          onChanged: (value) {
+                            setState(() {
+                              _value = value;
+                              scale = (value / 100) + 1;
+                            });
+                          },
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (_value < 100) {
+                              _value += 10;
+                              seatList;
+                            }
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Image.asset(
+                            kMinusIcon,
+                            color: Colors.white,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                /// Price and Ticket Button
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            RichText(
+                              text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: countTicket.toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 18),
+                                ),
+                                const TextSpan(
+                                  text: kTickets,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 18),
+                                )
+                              ]),
+                            ),
+                            Text(
+                              totalPrice.toString(),
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 18),
+                                  color: kPrimaryColor,
+                                  fontSize: 20),
                             ),
-                            const TextSpan(
-                              text: kTickets,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 18),
-                            )
-                          ]),
+                          ],
                         ),
-                        Text(
-                          totalPrice.toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: kPrimaryColor,
-                              fontSize: 20),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: TicketButton(
+                          btnText: kBuyTicket,
+                          btnColor: kPrimaryColor,
+                          txtColor: Colors.black,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SnackPage(ttlSeatPrice: totalPrice,)));
+                          },
                         ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: TicketButton(
-                      btnText: kBuyTicket,
-                      btnColor: kPrimaryColor,
-                      txtColor: Colors.black,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SnackPage(ttlSeatPrice: totalPrice,)));
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
+            );
+          }
         ),
       ),
     );
