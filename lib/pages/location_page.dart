@@ -70,7 +70,7 @@ class _LocationPageState extends State<LocationPage> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 24.0),
+                  padding: const EdgeInsets.only(left: 20.0),
                   child: Container(
                     height: 48,
                     width: MediaQuery.of(context).size.width * 0.7,
@@ -105,7 +105,7 @@ class _LocationPageState extends State<LocationPage> {
                 ),
                 /// Location Button
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> MainPage()));

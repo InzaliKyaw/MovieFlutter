@@ -70,7 +70,7 @@ class _OTPPageState extends State<OTPPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            verticalSpacing(48),
+            verticalSpacing(28),
             Image.asset(
               kCinemaLogo,
               height: 200,
@@ -110,7 +110,7 @@ class _OTPPageState extends State<OTPPage> {
                 numberOfFields: 6,
                 borderColor: Colors.white,
                 filled: true,
-                fieldWidth: 54,
+                fieldWidth: 44,
                 //set to true to show as box or false to show as dash
                 showFieldAsBox: true,
                 fillColor: Colors.white,
@@ -177,7 +177,8 @@ class _OTPPageState extends State<OTPPage> {
                        textAlign: TextAlign.center,
                      )),
                ),
-             )
+             ),
+            verticalSpacing(14)
           ],
         ),
       ),

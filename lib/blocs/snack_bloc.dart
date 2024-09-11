@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 import '../data/models/movie_booking_model.dart';
 import '../data/vos/snack_vo.dart';
-import '../utils/get_token.dart';
 
 class SnackBloc extends ChangeNotifier {
   List<SnackVO> snackList = [];

@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:the_movie_app_padc/data/vos/credit_vo.dart';
 import 'package:the_movie_app_padc/network/api_constants.dart';
-import 'package:the_movie_app_padc/utils/dimens.dart';
 
 class CastItemView extends StatefulWidget {
   final CreditVO creditVO;
