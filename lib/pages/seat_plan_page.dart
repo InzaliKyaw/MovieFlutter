@@ -62,21 +62,17 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: SafeArea(
-        child: Builder(
-          builder: (context) {
-            return Column(
-              mainAxisSize: MainAxisSize.max,
+    return  SafeArea(
+     child : Scaffold(
+          backgroundColor: kBackgroundColor,
+          body: SingleChildScrollView(
+          child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(14.0),
-
                   /// App Bar
                   child: Row(
                     children: [
@@ -106,8 +102,8 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                           kScreen,
                           style: TextStyle(
                               color: Colors.white,
-                            fontFamily: kDMSansFont,
-                            fontSize: 18
+                              fontFamily: kDMSansFont,
+                              fontSize: 18
                           ),
                         ),
                       ),
@@ -124,8 +120,9 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 14,
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 2,
@@ -268,7 +265,8 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                 ),
 
                 /// Price and Ticket Button
-                Expanded(
+                SizedBox(
+                  height: 100,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -325,9 +323,8 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                   ),
                 ),
               ],
-            );
-          }
-        ),
+            ),
+                  )
       ),
     );
   }

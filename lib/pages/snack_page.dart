@@ -332,7 +332,7 @@ class _SnackPageState extends State<SnackPage> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 24.0),
+                        margin: const EdgeInsets.only(left: 24.0,right:24.0,bottom: 24.0),
                         height: 48,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -638,67 +638,74 @@ class SnackTabBar extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-      height: kNowPlayingAndComingSoonTabBarHeight,
+      height: 60,
       width: MediaQuery.of(context).size.width * 1,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5), color: kBackgroundColor),
-      child: Row(
-        children: [
-          /// Now Showing Button
-          Expanded(
-            child: SnackButtonView(
-              label: kAll,
-              isSelected: selectedText == kAll,
-              onTapButton: () {
-                onTapNowShowingOrComingSoon(kAll);
-              },
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            /// Now Showing Button
+            SizedBox(
+              width: 80,
+              child: SnackButtonView(
+                label: kAll,
+                isSelected: selectedText == kAll,
+                onTapButton: () {
+                  onTapNowShowingOrComingSoon(kAll);
+                },
+              ),
             ),
-          ),
+            /// Combo Button
+            SizedBox(
+              width: 80,
+              child: SnackButtonView(
+                label: kCombo,
+                isSelected: selectedText == kCombo,
+                onTapButton: () {
+                  onTapNowShowingOrComingSoon(kCombo);
+                },
+              ),
+            ),
+            /// Coming Soon Button
+            SizedBox(
+              width: 80,
+              child: SnackButtonView(
+                label: kSnack,
+                isSelected: selectedText == kSnack,
+                onTapButton: () {
+                  onTapNowShowingOrComingSoon(kSnack);
+                },
+              ),
+            ),
 
-          /// Combo Button
-          Expanded(
-            child: SnackButtonView(
-              label: kCombo,
-              isSelected: selectedText == kCombo,
-              onTapButton: () {
-                onTapNowShowingOrComingSoon(kCombo);
-              },
+            /// Coming Soon Button
+            SizedBox(
+              width: 80,
+              child: SnackButtonView(
+                label: kPopcorn,
+                isSelected: selectedText == kPopcorn,
+                onTapButton: () {
+                  onTapNowShowingOrComingSoon(kPopcorn);
+                },
+              ),
             ),
-          ),
 
-          /// Coming Soon Button
-          Expanded(
-            child: SnackButtonView(
-              label: kSnack,
-              isSelected: selectedText == kSnack,
-              onTapButton: () {
-                onTapNowShowingOrComingSoon(kSnack);
-              },
+            /// Coming Soon Button
+            SizedBox(
+              width: 80,
+              child: SnackButtonView(
+                label: kBeverage,
+                isSelected: selectedText == kBeverage,
+                onTapButton: () {
+                  onTapNowShowingOrComingSoon(kBeverage);
+                },
+              ),
             ),
-          ),
 
-          /// Coming Soon Button
-          Expanded(
-            child: SnackButtonView(
-              label: kPopcorn,
-              isSelected: selectedText == kPopcorn,
-              onTapButton: () {
-                onTapNowShowingOrComingSoon(kPopcorn);
-              },
-            ),
-          ),
-
-          /// Coming Soon Button
-          Expanded(
-            child: SnackButtonView(
-              label: kBeverage,
-              isSelected: selectedText == kBeverage,
-              onTapButton: () {
-                onTapNowShowingOrComingSoon(kBeverage);
-              },
-            ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -723,6 +730,7 @@ class SnackButtonView extends StatelessWidget {
         },
         child: Container(
           margin: const EdgeInsets.all(kMarginMedium),
+          height: 100,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

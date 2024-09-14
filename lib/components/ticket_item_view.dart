@@ -17,7 +17,7 @@ class TicketItemView extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.4,
+        height: MediaQuery.of(context).size.height * 0.45,
         decoration: BoxDecoration(
             gradient: const LinearGradient(
                 begin: Alignment.topCenter,
@@ -63,12 +63,16 @@ class TicketItemView extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16
                                 ),),
-                              Text(kCinemaType,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16
-                                  ))
+                              SizedBox(
+                                width: 30,
+                                child: Text(kCinemaType,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 16
+                                    )),
+                              )
                             ],
                           ),
                         ),
@@ -97,12 +101,16 @@ class TicketItemView extends StatelessWidget {
                                     fontWeight: FontWeight.w700,
                                     fontSize: 16
                                 ),),
-                              Text(kSCREEN2,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16
-                                ),)
+                              SizedBox(
+                                width: 50,
+                                child: Text(kSCREEN2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16
+                                  ),),
+                              )
                             ],
                           ),
                         ),
